@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -15,6 +16,7 @@ namespace LeilaoServer
     {
         public List<Participante> ListaParticipantes = new List<Participante>();
         public List<ItemLance> ListaLances = new List<ItemLance>();
+        public bool isAuditServer = true;
         Multicaster multicast = new Multicaster();
 
         public FormMain()
@@ -22,8 +24,10 @@ namespace LeilaoServer
             InitializeComponent();
             multicast.CustomEvent += ReceiveMessage;
             multicast.JoinGroup();
-            Thread t1 = new Thread(new ThreadStart(DoTimeTick));
-            t1.Name = "TimerThread - ";
+            Thread t1 = new Thread(new ThreadStart(DoTimeTick))
+            {
+                Name = "TimerThread - "
+            };
             t1.Start();
         }
 
@@ -34,13 +38,13 @@ namespace LeilaoServer
             dataGridView2.Rows.Add(participanteTemp.NomeUsuario, participanteTemp.Ip);
         }
 
-        public void AddLance(string nomeItem, float valorInicial, float valorAdicionalMinimonceMinimo, int tempoRestante)
+        public void AddLance(string nomeItem, float valorInicial, float valorAdicionalMinimo, int tempoRestante)
         {
-            ItemLance itemLanceTemp = new ItemLance(nomeItem, valorInicial, valorAdicionalMinimonceMinimo, tempoRestante);
+            ItemLance itemLanceTemp = new ItemLance(nomeItem, valorInicial, valorAdicionalMinimo, valorInicial, "Leiloeiro", tempoRestante, true);
             ListaLances.Add(itemLanceTemp);
             dataGridView1.Rows.Add(itemLanceTemp.NomeItem, itemLanceTemp.EstaDisponivel, itemLanceTemp.DonoAtual, itemLanceTemp.ValorAtual, itemLanceTemp.ValorAdicionalMinimo, itemLanceTemp.TempoRestante);
 
-            multicast.SendInsertMessage(dataGridView1.Rows.Count + 1, itemLanceTemp);
+            multicast.SendUpdateMessage(ListaLances);
         }
 
         public string UpdateLanceValorAtual(ItemLance itemLance, Participante participante, float valorLance)
@@ -60,11 +64,9 @@ namespace LeilaoServer
                     dataGridView1.Rows[listIndex].Cells[3].Value = itemLance.ValorAtual;
                     dataGridView1.Rows[listIndex].Cells[2].Value = itemLance.DonoAtual;
 
-                    //ListaLances.Insert(listIndex, itemLance);
-                    //dataGridView1.Rows.Insert(listIndex, itemLance.NomeItem, itemLance.EstaDisponivel, itemLance.DonoAtual, itemLance.ValorAtual, itemLance.ValorAdicionalMinimo, itemLance.TempoRestante);
                     //dataGridView1.Update();
 
-                    multicast.SendInsertMessage(listIndex, itemLance);
+                    multicast.SendUpdateMessage(ListaLances);
 
                     return "Lance sucedido para o item '" + itemLance.NomeItem + "': \n  Lance de " + valorLance + " realizado com sucesso. \n  Novo dono do item: " + itemLance.DonoAtual;
                 }
@@ -89,7 +91,6 @@ namespace LeilaoServer
                     {
                         try
                         {
-
                             if (itemLance.EstaDisponivel)
                             {
                                 int listIndex = ListaLances.IndexOf(itemLance);
@@ -106,7 +107,7 @@ namespace LeilaoServer
                                     ListaLances[listIndex].EstaDisponivel = itemLance.EstaDisponivel;
                                     dataGridView1.Rows[listIndex].Cells[1].Value = itemLance.EstaDisponivel;
 
-                                    multicast.SendInsertMessage(listIndex, itemLance);
+                                    multicast.SendUpdateMessage(ListaLances);
                                 }
                             }
                         }
@@ -114,8 +115,6 @@ namespace LeilaoServer
                         {
                             Console.WriteLine("Error: " + e.Message);
                         }
-                        //ListaLances.Insert(listIndex, item); 
-                        //.Rows.Insert(listIndex, item.NomeItem, item.EstaDisponivel, item.DonoAtual, item.ValorAtual, item.ValorAdicionalMinimo, item.TempoRestante);
                     }
                 }
                 Thread.Sleep(1000);
@@ -123,18 +122,49 @@ namespace LeilaoServer
             //dataGridView1.Update();
         }
 
+        private void ReceiveMessage(string message)     //NOTA: CLIENTS NÃO DEVEM PODER MANDAR COMANDOS UPDATE E CLEAR
+        {
+            if (message.Length > 0 && message.StartsWith("#"))
+            {
+                //messages only treated by the audit server 
+                if (message.StartsWith(multicast.comandoJoin))      //Join Operation. Format: #join= Participante
+                {
+                    message = message.Substring(multicast.comandoJoin.Length);
+                    multicast.SendUpdateMessage(ListaLances);
+                    MessageBox.Show("comandoJoin = " + message);
+                }
+                else if (message.StartsWith(multicast.comandoBuy))      //Buy Operation. Format: #buy= index, value
+                {
+                    message = message.Substring(multicast.comandoBuy.Length);
+                    MessageBox.Show("comandoBuy = " + message);
+                }
+                //messages only treated by the audit clients 
+                else if (message.StartsWith(multicast.comandoClear))     //Clear operation. Format: #clear=
+                {
+                    message = message.Substring(multicast.comandoClear.Length);
+                    ListaLances.Clear();
+                    ListaParticipantes.Clear();
+                    //dataGridView1.Rows.Clear();
+                    //dataGridView2.Rows.Clear();
+                    MessageBox.Show("comandoClear = " + message);
+                }
+                else if (message.StartsWith(multicast.comandoUpdate))   //Update operation. Format: #update=List<ItemLance>
+                {
+                    message = message.Substring(multicast.comandoUpdate.Length);
+
+                    ListaLances = JsonSerializer.Deserialize<List<ItemLance>>(message);
+                    MessageBox.Show("comandoUpdate = " + message);
+                }
+            }
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
-            var telaAdicionarItem = new AddItem();
-            telaAdicionarItem.Owner = this;
+            var telaAdicionarItem = new AddItem
+            {
+                Owner = this
+            };
             telaAdicionarItem.Show();
-
-            //ItemLance itemTemp = telaAdicionarItem.NovoLance;
-            //if (itemTemp != null)
-            //{
-            //     leiloeiro.ListaLances.Add(itemTemp);
-            //    MessageBox.Show(leiloeiro.ListaLances[0].ToString());
-            //}
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -154,8 +184,6 @@ namespace LeilaoServer
                         dataGridView1.Rows[listIndex].Cells[5].Value = itemLance.TempoRestante;
                     }
                 }
-
-
             }
         }
 
@@ -182,39 +210,6 @@ namespace LeilaoServer
             Application.DoEvents();
             multicast.LeaveGroup();
         }
-
-        private void ReceiveMessage(string message)
-        {
-            if (message.Length > 0 && message.StartsWith("#"))
-            {
-                if (message.StartsWith(multicast.comandoJoin))
-                {
-                    message = message.Substring(multicast.comandoJoin.Length);
-                    MessageBox.Show("comandoJoin = " + message);
-                }
-                else if (message.StartsWith(multicast.comandoBuy))
-                {
-                    message = message.Substring(multicast.comandoBuy.Length);
-                    MessageBox.Show("comandoBuy = " + message);
-                }
-                else if (message.StartsWith(multicast.comandoClear))
-                {
-                    message = message.Substring(multicast.comandoClear.Length);
-                    //ListaLances.Clear();
-                    //ListaParticipantes.Clear();
-                    //dataGridView1.Rows.Clear();
-                    //dataGridView2.Rows.Clear();
-                    MessageBox.Show("comandoClear = " + message);
-                }
-                else if (message.StartsWith(multicast.comandoInsert)) //formato #insert=listIndex,NomeItem,ValorInicial, ValorAdicionalMinimo,ValorAtual,DonoAtual,TempoRestant,EstaDisponivel
-                {
-                    message = message.Substring(multicast.comandoInsert.Length);
-                  
-
-                   
-                    MessageBox.Show("comandoInsert = " + message);
-                }
-            }
-        }
     }
 }
+

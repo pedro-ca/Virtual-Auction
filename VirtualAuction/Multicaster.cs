@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Newtonsoft.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -29,7 +32,7 @@ namespace LeilaoServer
         RijndaelManaged rijndaelEncryption = new RijndaelManaged();
 
         public readonly string comandoClear = "#clear=";
-        public readonly string comandoInsert = "#insert=";
+        public readonly string comandoUpdate = "#update=";
         public readonly string comandoBuy = "#buy=";
         public readonly string comandoJoin = "#join=";
 
@@ -39,10 +42,20 @@ namespace LeilaoServer
             SendMessage(message);
         }
 
-        public void SendInsertMessage(int listIndex, ItemLance item)        //formato #insert=listIndex,NomeItem,ValorInicial, ValorAdicionalMinimo,ValorAtual,DonoAtual,TempoRestant,EstaDisponivel
+        public void SendUpdateMessage(List<ItemLance> ListaLances)
         {
-            string message = comandoInsert + listIndex + "," + string.Join(",", item.GetType().GetProperties().Select(prop => prop.GetValue(item))); //reflection que converte o objeto inteiro para string
+            string message = comandoUpdate + JsonSerializer.Serialize(ListaLances);
             SendMessage(message);
+        }
+
+        public void SendBuyMessage()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SendJoinMessage()
+        {
+            throw new NotImplementedException();
         }
 
         private void SendMessage(String message)     //mudar para private depois
@@ -83,7 +96,7 @@ namespace LeilaoServer
                 multiCastEP = new IPEndPoint(group, port);
                 client.Client.Bind(new IPEndPoint(IPAddress.Any, port));
                 this.stayAlive = true;
-                receiveThread = new Thread(this.runThread);
+                receiveThread = new Thread(this.RunThread);
                 receiveThread.Start();
 
                 SendClearMessage();
@@ -118,7 +131,7 @@ namespace LeilaoServer
             }
         }
 
-        private void runThread()
+        private void RunThread()
         {
             Byte[] buff;
             String message;

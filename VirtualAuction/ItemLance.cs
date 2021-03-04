@@ -4,14 +4,6 @@ using System.Text;
 
 namespace LeilaoServer
 {
-    public class CustomObject
-    {
-        public string NameFoo { get; set; }
-        public float NumberFoo { get; set; }
-        public bool conditionFoo { get; set; }
-    }
-
-
     public class ItemLance
     {
         public string NomeItem { get; private set; }
@@ -22,15 +14,15 @@ namespace LeilaoServer
         public int TempoRestante { get; set; }
         public bool EstaDisponivel { get; set; }
 
-        public ItemLance(string nomeItem, float valorInicial, float valorAdicionalMinimonceMinimo, int tempoRestante)
+        public ItemLance(string nomeItem, float valorInicial, float valorAdicionalMinimo, float valorAtual, string donoAtual, int tempoRestante, bool estaDisponivel)
         {
             this.NomeItem = nomeItem;
             this.ValorInicial = valorInicial;
-            this.ValorAdicionalMinimo = valorAdicionalMinimonceMinimo;
-            this.ValorAtual = valorInicial;
-            this.DonoAtual = "Leiloeiro";
+            this.ValorAdicionalMinimo = valorAdicionalMinimo;
+            this.ValorAtual = valorAtual;
+            this.DonoAtual = donoAtual;
             this.TempoRestante = tempoRestante;
-            this.EstaDisponivel = true;
+            this.EstaDisponivel = estaDisponivel;
         }
     }
 }
