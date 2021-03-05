@@ -62,7 +62,7 @@
             // txtBoxTempoDeLeilao
             // 
             this.txtBoxTempoDeLeilao.Location = new System.Drawing.Point(9, 105);
-            this.txtBoxTempoDeLeilao.MaxLength = 8;
+            this.txtBoxTempoDeLeilao.MaxLength = 7;
             this.txtBoxTempoDeLeilao.Name = "txtBoxTempoDeLeilao";
             this.txtBoxTempoDeLeilao.Size = new System.Drawing.Size(131, 22);
             this.txtBoxTempoDeLeilao.TabIndex = 3;
@@ -71,7 +71,7 @@
             // txtBoxValorMin
             // 
             this.txtBoxValorMin.Location = new System.Drawing.Point(182, 105);
-            this.txtBoxValorMin.MaxLength = 8;
+            this.txtBoxValorMin.MaxLength = 7;
             this.txtBoxValorMin.Name = "txtBoxValorMin";
             this.txtBoxValorMin.Size = new System.Drawing.Size(131, 22);
             this.txtBoxValorMin.TabIndex = 4;
@@ -98,7 +98,7 @@
             // txtBoxValorInicial
             // 
             this.txtBoxValorInicial.Location = new System.Drawing.Point(182, 46);
-            this.txtBoxValorInicial.MaxLength = 8;
+            this.txtBoxValorInicial.MaxLength = 7;
             this.txtBoxValorInicial.Name = "txtBoxValorInicial";
             this.txtBoxValorInicial.Size = new System.Drawing.Size(131, 22);
             this.txtBoxValorInicial.TabIndex = 2;

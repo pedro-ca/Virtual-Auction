@@ -24,30 +24,27 @@ namespace LeilaoServer
             InitializeComponent();
             multicast.CustomEvent += ReceiveMessage;
             multicast.JoinGroup();
-            Thread t1 = new Thread(new ThreadStart(DoTimeTick))
-            {
-                Name = "TimerThread - "
-            };
+            Thread t1 = new Thread(new ThreadStart(this.DoTimeTick));
             t1.Start();
         }
 
-        public void AddParticipante(string nomeUsuario, string ip, string certificadoDigital)
+        public void AddParticipante(string nomeUsuario, string ip, string certificadoDigital)   //server side
         {
             Participante participanteTemp = new Participante(nomeUsuario, ip, certificadoDigital);
             ListaParticipantes.Add(participanteTemp);
-            dataGridView2.Rows.Add(participanteTemp.NomeUsuario, participanteTemp.Ip);
+            dataGridParticipante.Rows.Add(participanteTemp.NomeUsuario, participanteTemp.Ip);
         }
 
-        public void AddLance(string nomeItem, float valorInicial, float valorAdicionalMinimo, int tempoRestante)
+        public void AddLance(string nomeItem, float valorInicial, float valorAdicionalMinimo, int tempoRestante)    //server side
         {
             ItemLance itemLanceTemp = new ItemLance(nomeItem, valorInicial, valorAdicionalMinimo, valorInicial, "Leiloeiro", tempoRestante, true);
             ListaLances.Add(itemLanceTemp);
-            dataGridView1.Rows.Add(itemLanceTemp.NomeItem, itemLanceTemp.EstaDisponivel, itemLanceTemp.DonoAtual, itemLanceTemp.ValorAtual, itemLanceTemp.ValorAdicionalMinimo, itemLanceTemp.TempoRestante);
+            dataGridItemLance.Rows.Add(itemLanceTemp.NomeItem, itemLanceTemp.EstaDisponivel, itemLanceTemp.DonoAtual, itemLanceTemp.ValorAtual, itemLanceTemp.ValorAdicionalMinimo, itemLanceTemp.TempoRestante);
 
             multicast.SendUpdateMessage(ListaLances);
         }
 
-        public string UpdateLanceValorAtual(ItemLance itemLance, Participante participante, float valorLance)
+        public string UpdateLanceValorAtual(ItemLance itemLance, Participante participante, float valorLance)   //server side
         {
             if (itemLance.EstaDisponivel && ListaLances.Contains(itemLance))
             {
@@ -61,10 +58,10 @@ namespace LeilaoServer
                     ListaLances[listIndex].ValorAtual = itemLance.ValorAtual;
                     ListaLances[listIndex].DonoAtual = itemLance.DonoAtual;
 
-                    dataGridView1.Rows[listIndex].Cells[3].Value = itemLance.ValorAtual;
-                    dataGridView1.Rows[listIndex].Cells[2].Value = itemLance.DonoAtual;
+                    //dataGridItemLance.Rows[listIndex].Cells[3].Value = itemLance.ValorAtual;
+                    //dataGridItemLance.Rows[listIndex].Cells[2].Value = itemLance.DonoAtual;
 
-                    //dataGridView1.Update();
+                    UpdateDataGridItemLance();
 
                     multicast.SendUpdateMessage(ListaLances);
 
@@ -81,11 +78,26 @@ namespace LeilaoServer
             }
         }
 
+        public void UpdateDataGridItemLance()
+        {
+            dataGridItemLance.Invoke(new MethodInvoker(() => { dataGridItemLance.Rows.Clear(); }));
+            foreach (ItemLance item in ListaLances){
+                if (dataGridItemLance.InvokeRequired)
+                {
+                    dataGridItemLance.Invoke(new MethodInvoker(() => { dataGridItemLance.Rows.Add(item.NomeItem, item.EstaDisponivel, item.DonoAtual, item.ValorAtual, item.ValorAdicionalMinimo, item.TempoRestante); }));
+                }
+                else
+                {
+                    dataGridItemLance.Rows.Add(item.NomeItem, item.EstaDisponivel, item.DonoAtual, item.ValorAtual, item.ValorAdicionalMinimo, item.TempoRestante);
+                }
+            }
+        }
+
         public void DoTimeTick()
         {
             while (!this.IsDisposed)
             {
-                if (ListaLances.Count > 0 && dataGridView1 != null)
+                if (ListaLances.Count > 0 && dataGridItemLance != null)
                 {
                     foreach (ItemLance itemLance in ListaLances)
                     {
@@ -99,13 +111,13 @@ namespace LeilaoServer
                                 {
                                     itemLance.TempoRestante--;
                                     ListaLances[listIndex].TempoRestante = itemLance.TempoRestante;
-                                    dataGridView1.Rows[listIndex].Cells[5].Value = itemLance.TempoRestante;
+                                    dataGridItemLance.Rows[listIndex].Cells[5].Value = itemLance.TempoRestante;
                                 }
-                                else
+                                else    //server side
                                 {
                                     itemLance.EstaDisponivel = false;
                                     ListaLances[listIndex].EstaDisponivel = itemLance.EstaDisponivel;
-                                    dataGridView1.Rows[listIndex].Cells[1].Value = itemLance.EstaDisponivel;
+                                    dataGridItemLance.Rows[listIndex].Cells[1].Value = itemLance.EstaDisponivel;
 
                                     multicast.SendUpdateMessage(ListaLances);
                                 }
@@ -153,6 +165,8 @@ namespace LeilaoServer
                     message = message.Substring(multicast.comandoUpdate.Length);
 
                     ListaLances = JsonSerializer.Deserialize<List<ItemLance>>(message);
+                    UpdateDataGridItemLance();
+                    //this.dataGridItemLance.DataSource = ListaLances;
                     MessageBox.Show("comandoUpdate = " + message);
                 }
             }
@@ -169,19 +183,19 @@ namespace LeilaoServer
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (dataGridView1.CurrentCell != null)
+            if (dataGridItemLance.CurrentCell != null)
             {
                 DialogResult dialogResult = MessageBox.Show("Tem certeza que deseja remover este item do leilão?", "Confirmação necessária", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
-                    int listIndex = dataGridView1.CurrentCell.RowIndex;
+                    int listIndex = dataGridItemLance.CurrentCell.RowIndex;
                     ItemLance itemLance = ListaLances[listIndex];
                     if (itemLance.EstaDisponivel)
                     {
                         itemLance.TempoRestante = 0;
 
                         ListaLances[listIndex].TempoRestante = itemLance.TempoRestante;
-                        dataGridView1.Rows[listIndex].Cells[5].Value = itemLance.TempoRestante;
+                        dataGridItemLance.Rows[listIndex].Cells[5].Value = itemLance.TempoRestante;
                     }
                 }
             }
@@ -194,9 +208,9 @@ namespace LeilaoServer
 
         private void btnNovoLance_Click(object sender, EventArgs e)
         {
-            if (dataGridView1.CurrentCell != null)
+            if (dataGridItemLance.CurrentCell != null)
             {
-                int listIndex = dataGridView1.CurrentCell.RowIndex;
+                int listIndex = dataGridItemLance.CurrentCell.RowIndex;
                 ItemLance itemLance = ListaLances[listIndex];
                 if (itemLance.EstaDisponivel)
                 {

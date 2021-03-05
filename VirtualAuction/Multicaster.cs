@@ -28,7 +28,7 @@ namespace LeilaoServer
         private int port = 0;
         private IPEndPoint multiCastEP = null;
         private bool stayAlive = true;
-        private Thread receiveThread = null;
+        private Thread t2 = null;
         RijndaelManaged rijndaelEncryption = new RijndaelManaged();
 
         public readonly string comandoClear = "#clear=";
@@ -96,8 +96,8 @@ namespace LeilaoServer
                 multiCastEP = new IPEndPoint(group, port);
                 client.Client.Bind(new IPEndPoint(IPAddress.Any, port));
                 this.stayAlive = true;
-                receiveThread = new Thread(this.RunThread);
-                receiveThread.Start();
+                t2 = new Thread(this.RunThread);
+                t2.Start();
 
                 SendClearMessage();
             }
@@ -115,7 +115,7 @@ namespace LeilaoServer
                 {
                     Thread.Sleep(500);
                     stayAlive = false;
-                    receiveThread.Abort();
+                    t2.Abort();
                     client.DropMulticastGroup(group);
                     client.Close();
                     client = null;
