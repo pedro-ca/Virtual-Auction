@@ -42,11 +42,11 @@ namespace AuctionClient
             foreach (ItemLance item in ListaLances){
                 if (dataGridItemLance.InvokeRequired)
                 {
-                    dataGridItemLance.Invoke(new MethodInvoker(() => { dataGridItemLance.Rows.Add(item.NomeItem, item.EstaDisponivel, item.DonoAtual, item.ValorAtual, item.ValorAdicionalMinimo, item.TempoRestante); }));
+                    dataGridItemLance.Invoke(new MethodInvoker(() => { dataGridItemLance.Rows.Add(item.NomeItem, item.EstaDisponivel, item.DonoAtual, "$ " + item.ValorAtual, "$ " + item.ValorAdicionalMinimo, item.TempoRestante); }));
                 }
                 else
                 {
-                    dataGridItemLance.Rows.Add(item.NomeItem, item.EstaDisponivel, item.DonoAtual, item.ValorAtual, item.ValorAdicionalMinimo, item.TempoRestante);
+                    dataGridItemLance.Rows.Add(item.NomeItem, item.EstaDisponivel, item.DonoAtual, "$ " + item.ValorAtual, "$ " + item.ValorAdicionalMinimo, item.TempoRestante);
                 }
             }
         }
@@ -91,24 +91,32 @@ namespace AuctionClient
 
         private void ReceiveMessage(string message)
         {
-            if (message.Length > 0 && message.StartsWith("#"))
+            try
             {
-                //messages only treated by the audit clients 
-                if (message.StartsWith(multicast.comandoClear))     //Clear operation. Format: #clear=
+                if (message.Length > 0 && message.StartsWith("#"))
                 {
-                    message = message.Substring(multicast.comandoClear.Length);
-                    ListaLances.Clear();
-                    UpdateDataGridItemLance();
-                    multicast.SendJoinMessage(multicast.participanteAtual);
-                    MessageBox.Show("O Servidor de Lances reiniciou. Todos os lances foram limpados.");
-                }
-                else if (message.StartsWith(multicast.comandoUpdate))   //Update operation. Format: #update=List<ItemLance>
-                {
-                    message = message.Substring(multicast.comandoUpdate.Length);
+                    //messages only treated by the audit clients 
+                    if (message.StartsWith(multicast.comandoClear))     //Clear operation. Format: #clear=
+                    {
+                        message = message.Substring(multicast.comandoClear.Length);
+                        ListaLances.Clear();
+                        UpdateDataGridItemLance();
+                        multicast.SendJoinMessage(multicast.participanteAtual);
+                        MessageBox.Show("O Servidor de Lances reiniciou. Todos os lances foram limpados.");
+                    }
+                    else if (message.StartsWith(multicast.comandoUpdate))   //Update operation. Format: #update=List<ItemLance>
+                    {
+                        message = message.Substring(multicast.comandoUpdate.Length);
 
-                    ListaLances = JsonSerializer.Deserialize<List<ItemLance>>(message);
-                    UpdateDataGridItemLance();
+                        ListaLances = JsonSerializer.Deserialize<List<ItemLance>>(message);
+                        UpdateDataGridItemLance();
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+
+                MessageBox.Show("Error: " + e.Message);
             }
         }
 

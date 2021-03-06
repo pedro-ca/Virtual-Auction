@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
@@ -28,18 +29,17 @@ namespace AuctionServer
             t1.Start();
         }
 
-        public void AddParticipante(string nomeUsuario, string ip, string certificadoDigital)   //server side
+        public void AddParticipante(Participante novoParticipante)   //server side
         {
-            Participante participanteTemp = new Participante(nomeUsuario, ip, certificadoDigital);
-            ListaParticipantes.Add(participanteTemp);
-            dataGridParticipante.Rows.Add(participanteTemp.NomeUsuario, participanteTemp.Ip);
+            ListaParticipantes.Add(novoParticipante);
+            UpdateDataGridParticipante();
         }
 
         public void AddLance(string nomeItem, float valorInicial, float valorAdicionalMinimo, int tempoRestante)    //server side
         {
             ItemLance itemLanceTemp = new ItemLance(nomeItem, valorInicial, valorAdicionalMinimo, valorInicial, "Leiloeiro", tempoRestante, true);
             ListaLances.Add(itemLanceTemp);
-            dataGridItemLance.Rows.Add(itemLanceTemp.NomeItem, itemLanceTemp.EstaDisponivel, itemLanceTemp.DonoAtual, itemLanceTemp.ValorAtual, itemLanceTemp.ValorAdicionalMinimo, itemLanceTemp.TempoRestante);
+            dataGridItemLance.Rows.Add(itemLanceTemp.NomeItem, itemLanceTemp.EstaDisponivel, itemLanceTemp.DonoAtual, "$ " + itemLanceTemp.ValorAtual, "$ " + itemLanceTemp.ValorAdicionalMinimo, itemLanceTemp.TempoRestante);
 
             multicast.SendUpdateMessage(ListaLances);
         }
@@ -57,9 +57,6 @@ namespace AuctionServer
 
                     ListaLances[listIndex].ValorAtual = itemLance.ValorAtual;
                     ListaLances[listIndex].DonoAtual = itemLance.DonoAtual;
-
-                    //dataGridItemLance.Rows[listIndex].Cells[3].Value = itemLance.ValorAtual;
-                    //dataGridItemLance.Rows[listIndex].Cells[2].Value = itemLance.DonoAtual;
 
                     UpdateDataGridItemLance();
 
@@ -84,11 +81,27 @@ namespace AuctionServer
             foreach (ItemLance item in ListaLances){
                 if (dataGridItemLance.InvokeRequired)
                 {
-                    dataGridItemLance.Invoke(new MethodInvoker(() => { dataGridItemLance.Rows.Add(item.NomeItem, item.EstaDisponivel, item.DonoAtual, item.ValorAtual, item.ValorAdicionalMinimo, item.TempoRestante); }));
+                    dataGridItemLance.Invoke(new MethodInvoker(() => { dataGridItemLance.Rows.Add(item.NomeItem, item.EstaDisponivel, item.DonoAtual, "$ " + item.ValorAtual, "$ " + item.ValorAdicionalMinimo, item.TempoRestante); }));
                 }
                 else
                 {
-                    dataGridItemLance.Rows.Add(item.NomeItem, item.EstaDisponivel, item.DonoAtual, item.ValorAtual, item.ValorAdicionalMinimo, item.TempoRestante);
+                    dataGridItemLance.Rows.Add(item.NomeItem, item.EstaDisponivel, item.DonoAtual, "$ " + item.ValorAtual, "$ " + item.ValorAdicionalMinimo, item.TempoRestante);
+                }
+            }
+        }
+
+        public void UpdateDataGridParticipante()
+        {
+            dataGridParticipante.Invoke(new MethodInvoker(() => { dataGridParticipante.Rows.Clear(); }));
+            foreach (Participante participante in ListaParticipantes)
+            {
+                if (dataGridParticipante.InvokeRequired)
+                {
+                    dataGridParticipante.Invoke(new MethodInvoker(() => { dataGridParticipante.Rows.Add(participante.NomeUsuario, participante.Ip); }));
+                }
+                else
+                {
+                    dataGridParticipante.Rows.Add(participante);
                 }
             }
         }
@@ -131,26 +144,41 @@ namespace AuctionServer
                 }
                 Thread.Sleep(1000);
             }
-            //dataGridView1.Update();
         }
 
-        private void ReceiveMessage(string message)     //NOTA: CLIENTS NÃO DEVEM PODER MANDAR COMANDOS UPDATE E CLEAR
+        private void ReceiveMessage(string message)
         {
-            if (message.Length > 0 && message.StartsWith("#"))
+            try
             {
-                //messages only treated by the audit server 
-                if (message.StartsWith(multicast.comandoJoin))      //Join Operation. Format: #join= Participante
+                if (message.Length > 0 && message.StartsWith("#"))
                 {
-                    message = message.Substring(multicast.comandoJoin.Length);
-                    multicast.SendUpdateMessage(ListaLances);
-                    MessageBox.Show("comandoJoin = " + message);
+                    //messages only treated by the audit server 
+                    if (message.StartsWith(multicast.comandoJoin))      //Join Operation. Format: #join= Participante
+                    {
+                        message = message.Substring(multicast.comandoJoin.Length);
+                        multicast.SendUpdateMessage(ListaLances);
+                        AddParticipante(JsonSerializer.Deserialize<Participante>(message));
+                        // MessageBox.Show("comandoJoin = " + message);
+                    }
+                    else if (message.StartsWith(multicast.comandoBuy))      //Buy Operation. Format: #buy= index, value, Participante
+                    {
+                        message = message.Substring(multicast.comandoBuy.Length);
+
+                        int indexList = int.Parse(message.Substring(0, message.IndexOf(',')));      //get content before first ',', The index of datagridview
+                        message = message.Substring(message.IndexOf(',') + 1);       //remove content from 0 to ','
+
+                        float audictValue = float.Parse(message.Substring(0, message.IndexOf(',')));   //get content before the second ',', The value of the transaction 
+                        message = message.Substring(message.IndexOf(',') + 1);       //remove content from 0 to ','
+
+                        Participante newOwner = JsonSerializer.Deserialize<Participante>(message);      //deserialize the remaining message to Participante object
+
+                        UpdateLanceValorAtual(ListaLances[indexList], newOwner, audictValue);
+                    }
                 }
-                else if (message.StartsWith(multicast.comandoBuy))      //Buy Operation. Format: #buy= index, value, Participante
-                {
-                    message = message.Substring(multicast.comandoBuy.Length);
-                    //ItemLance itemLanceTemp = JsonSerializer.Deserialize<ItemLance>(message);
-                    MessageBox.Show("comandoBuy = " + message);
-                }
+            }
+            catch (Exception e )
+            {
+                MessageBox.Show("Error: " + e.Message);
             }
         }
 
@@ -192,25 +220,6 @@ namespace AuctionServer
             Application.DoEvents();
             multicast.LeaveGroup();
         }
-
-        /*
-        private void btnNovoParticipante_Click(object sender, EventArgs e)
-        {
-            AddParticipante("DESGRAÇAAA", "5451.124", "CERTIFICADO FODA");
-        }
-
-        private void btnNovoLance_Click(object sender, EventArgs e)
-        {
-            if (dataGridItemLance.CurrentCell != null)
-            {
-                int listIndex = dataGridItemLance.CurrentCell.RowIndex;
-                ItemLance itemLance = ListaLances[listIndex];
-                if (itemLance.EstaDisponivel)
-                {
-                    UpdateLanceValorAtual(itemLance, ListaParticipantes[0], 1000);
-                }
-            }
-        }*/
     }
 }
 
