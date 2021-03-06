@@ -140,6 +140,7 @@ namespace AuctionClient
                     ListaLances.Clear();
                     ListaParticipantes.Clear();
                     UpdateDataGridItemLance();
+                    multicast.SendJoinMessage(multicast.participanteAtual);
                     MessageBox.Show("O Servidor de Lances reiniciou. Todos os lances foram limpados.");
                 }
                 else if (message.StartsWith(multicast.comandoUpdate))   //Update operation. Format: #update=List<ItemLance>
@@ -157,7 +158,7 @@ namespace AuctionClient
         {
             if (dataGridItemLance.CurrentCell != null)
             {
-                multicast.SendBuyMessage(dataGridItemLance.CurrentCell.RowIndex);
+                multicast.SendBuyMessage(dataGridItemLance.CurrentCell.RowIndex,1000,multicast.participanteAtual);
                 /*DialogResult dialogResult = MessageBox.Show("Tem certeza que deseja remover este item do leilão?", "Confirmação necessária", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {

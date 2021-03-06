@@ -145,9 +145,10 @@ namespace AuctionServer
                     multicast.SendUpdateMessage(ListaLances);
                     MessageBox.Show("comandoJoin = " + message);
                 }
-                else if (message.StartsWith(multicast.comandoBuy))      //Buy Operation. Format: #buy= index, value
+                else if (message.StartsWith(multicast.comandoBuy))      //Buy Operation. Format: #buy= index, value, Participante
                 {
                     message = message.Substring(multicast.comandoBuy.Length);
+                    //ItemLance itemLanceTemp = JsonSerializer.Deserialize<ItemLance>(message);
                     MessageBox.Show("comandoBuy = " + message);
                 }
             }

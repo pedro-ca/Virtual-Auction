@@ -30,6 +30,8 @@ namespace AuctionClient
         private Thread t2 = null;
         RijndaelManaged rijndaelEncryption = new RijndaelManaged();
 
+        public Participante participanteAtual = new Participante("default","default","default");
+
         public readonly string comandoClear = "#clear=";
         public readonly string comandoUpdate = "#update=";
         public readonly string comandoBuy = "#buy=";
@@ -37,19 +39,19 @@ namespace AuctionClient
         //talvez adicionar um comando chamado comandoMessage, onde client e servidores adicionam messagens em um datagridview que faz log de transações.
 
 
-        public void SendJoinMessage()       //TODO: precisa enviar Participante serializado como paramentro 
+        public void SendJoinMessage(Participante participante)      
         {
-            string message = comandoJoin; //+ JsonSerializer.Serialize(participante);
+            string message = comandoJoin + JsonSerializer.Serialize(participante);
             SendMessage(message);
         }
 
-        public void SendBuyMessage(int rowIndex)        //TODO: precisa enviar index, valor e Parcipante serializado como parametro
+        public void SendBuyMessage(int rowIndex, float valorLance, Participante participante)
         {
-            string message = comandoBuy+rowIndex; //index + valorLance + JsonSerializer.Serialize(participante);
+            string message = comandoBuy + rowIndex +","+ valorLance +","+ JsonSerializer.Serialize(participante);
             SendMessage(message);
         }
 
-        private void SendMessage(String message)     //mudar para private depois
+        private void SendMessage(String message)
         {
             if (message.Length > 0)
             {
@@ -90,7 +92,7 @@ namespace AuctionClient
                 t2 = new Thread(this.RunThread);
                 t2.Start();
 
-                SendJoinMessage();
+                SendJoinMessage(participanteAtual);
             }
             catch (Exception e)
             {
