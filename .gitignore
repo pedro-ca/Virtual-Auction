@@ -16,3 +16,10 @@ VirtualAuction/obj/Debug/AuctionServer.pdb
 VirtualAuction/obj/Debug/AuctionServer.Properties.Resources.resources
 VirtualAuction/obj/Debug/LeilaoServer.AddItem.resources
 VirtualAuction/obj/Debug/LeilaoServer.FormMain.resources
+*.cache
+AuctionClient/obj/Debug/AuctionClient.exe
+AuctionClient/obj/Debug/AuctionClient.FormClient.resources
+AuctionClient/obj/Debug/AuctionClient.pdb
+AuctionClient/obj/Debug/AuctionClient.Properties.Resources.resources
+VirtualAuction/obj/Debug/AuctionServer.AddItem.resources
+VirtualAuction/obj/Debug/AuctionServer.FormServer.resources

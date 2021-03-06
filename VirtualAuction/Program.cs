@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace LeilaoServer
+namespace AuctionServer
 {
     static class Program
     {
@@ -16,7 +16,7 @@ namespace LeilaoServer
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormMain());
+            Application.Run(new FormServer());
         }
     }
 }

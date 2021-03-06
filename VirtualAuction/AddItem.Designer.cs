@@ -1,4 +1,4 @@
-﻿namespace LeilaoServer
+﻿namespace AuctionServer
 {
     partial class AddItem
     {

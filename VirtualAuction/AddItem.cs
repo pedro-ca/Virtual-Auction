@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace LeilaoServer
+namespace AuctionServer
 {
     public partial class AddItem : Form
     {
@@ -14,7 +14,7 @@ namespace LeilaoServer
         {
             if (!String.IsNullOrEmpty(txtBoxNomeItem.Text) && !String.IsNullOrEmpty(txtBoxTempoDeLeilao.Text) && !String.IsNullOrEmpty(txtBoxValorInicial.Text) && !String.IsNullOrEmpty(txtBoxValorMin.Text))
             {
-                FormMain parentForm = (FormMain)this.Owner;
+                FormServer parentForm = (FormServer)this.Owner;
                 parentForm.AddLance(txtBoxNomeItem.Text, float.Parse(txtBoxValorInicial.Text), float.Parse(txtBoxValorMin.Text), int.Parse(txtBoxTempoDeLeilao.Text));
                 this.Dispose();
             }
