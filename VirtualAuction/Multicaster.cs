@@ -78,7 +78,7 @@ namespace LeilaoServer
                 if (!IPAddress.TryParse("224.0.0.251", out group))   //valor fixo
                     throw new ApplicationException("Invalid Multicast Group Address");
 
-                string rijKey = "default";  //valor fixo
+                string rijKey = "default";              //valor fixo.       !!!! MUDAR PARA UM VALOR ALEATORIO POR CADA INSTANCIA DO SERVER !!!!
 
                 while (rijKey.Length < 16)  //cambiarra f*dida. 16 caraceres é string ideal pra ser usado como key e iv
                 {

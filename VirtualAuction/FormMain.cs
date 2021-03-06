@@ -201,6 +201,13 @@ namespace LeilaoServer
             }
         }
 
+        private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.DoEvents();
+            multicast.LeaveGroup();
+        }
+
+        /*
         private void btnNovoParticipante_Click(object sender, EventArgs e)
         {
             AddParticipante("DESGRAÇAAA", "5451.124", "CERTIFICADO FODA");
@@ -217,13 +224,7 @@ namespace LeilaoServer
                     UpdateLanceValorAtual(itemLance, ListaParticipantes[0], 1000);
                 }
             }
-        }
-
-        private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            Application.DoEvents();
-            multicast.LeaveGroup();
-        }
+        }*/
     }
 }
 

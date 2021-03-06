@@ -5,8 +5,6 @@ namespace LeilaoServer
 {
     public partial class AddItem : Form
     {
-        //internal ItemLance NovoLance { get; set; }
-
         public AddItem()
         {
             InitializeComponent();
@@ -18,7 +16,6 @@ namespace LeilaoServer
             {
                 FormMain parentForm = (FormMain)this.Owner;
                 parentForm.AddLance(txtBoxNomeItem.Text, float.Parse(txtBoxValorInicial.Text), float.Parse(txtBoxValorMin.Text), int.Parse(txtBoxTempoDeLeilao.Text));
-                //NovoLance = new ItemLance(txtBoxNomeItem.Text, float.Parse(txtBoxValorInicial.Text), float.Parse(txtBoxValorMin.Text), int.Parse(txtBoxTempoDeLeilao.Text));
                 this.Dispose();
             }
             else
@@ -70,7 +67,7 @@ namespace LeilaoServer
 
         private void txtBoxNomeItem_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == ',')       //pra evitar bug nainterpretação da mensagem
+            if (e.KeyChar == ',')       //pra evitar bug nainterpretação da mensagem, não é permitido virgula
             {
                 e.Handled = true;
             }

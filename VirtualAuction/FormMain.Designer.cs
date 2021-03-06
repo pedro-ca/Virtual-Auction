@@ -32,18 +32,16 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.dataGridItemLance = new System.Windows.Forms.DataGridView();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.btnNovoLance = new System.Windows.Forms.Button();
-            this.btnNovoParticipante = new System.Windows.Forms.Button();
-            this.dataGridParticipante = new System.Windows.Forms.DataGridView();
-            this.NomeUsuario = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Ip = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Nome = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Disp = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DonoAtual = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ValAtual = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ValPorLance = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TempoRestante = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.dataGridParticipante = new System.Windows.Forms.DataGridView();
+            this.NomeUsuario = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Ip = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridItemLance)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -116,82 +114,6 @@
             this.dataGridItemLance.Size = new System.Drawing.Size(687, 318);
             this.dataGridItemLance.TabIndex = 0;
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.btnNovoLance);
-            this.groupBox2.Controls.Add(this.btnNovoParticipante);
-            this.groupBox2.Controls.Add(this.dataGridParticipante);
-            this.groupBox2.Location = new System.Drawing.Point(745, 14);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox2.Size = new System.Drawing.Size(319, 439);
-            this.groupBox2.TabIndex = 1;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Participantes";
-            // 
-            // btnNovoLance
-            // 
-            this.btnNovoLance.Location = new System.Drawing.Point(75, 399);
-            this.btnNovoLance.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btnNovoLance.Name = "btnNovoLance";
-            this.btnNovoLance.Size = new System.Drawing.Size(127, 23);
-            this.btnNovoLance.TabIndex = 3;
-            this.btnNovoLance.Text = "NovoLance";
-            this.btnNovoLance.UseVisualStyleBackColor = true;
-            this.btnNovoLance.Click += new System.EventHandler(this.btnNovoLance_Click);
-            // 
-            // btnNovoParticipante
-            // 
-            this.btnNovoParticipante.Location = new System.Drawing.Point(75, 370);
-            this.btnNovoParticipante.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btnNovoParticipante.Name = "btnNovoParticipante";
-            this.btnNovoParticipante.Size = new System.Drawing.Size(127, 23);
-            this.btnNovoParticipante.TabIndex = 2;
-            this.btnNovoParticipante.Text = "NovoParticipante";
-            this.btnNovoParticipante.UseVisualStyleBackColor = true;
-            this.btnNovoParticipante.Click += new System.EventHandler(this.btnNovoParticipante_Click);
-            // 
-            // dataGridParticipante
-            // 
-            this.dataGridParticipante.AllowUserToAddRows = false;
-            this.dataGridParticipante.AllowUserToDeleteRows = false;
-            this.dataGridParticipante.AllowUserToResizeColumns = false;
-            this.dataGridParticipante.AllowUserToResizeRows = false;
-            this.dataGridParticipante.BackgroundColor = System.Drawing.SystemColors.Control;
-            this.dataGridParticipante.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridParticipante.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.NomeUsuario,
-            this.Ip});
-            this.dataGridParticipante.Location = new System.Drawing.Point(19, 31);
-            this.dataGridParticipante.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.dataGridParticipante.MultiSelect = false;
-            this.dataGridParticipante.Name = "dataGridParticipante";
-            this.dataGridParticipante.ReadOnly = true;
-            this.dataGridParticipante.RowHeadersVisible = false;
-            this.dataGridParticipante.RowHeadersWidth = 51;
-            this.dataGridParticipante.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            this.dataGridParticipante.RowTemplate.Height = 24;
-            this.dataGridParticipante.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridParticipante.Size = new System.Drawing.Size(280, 318);
-            this.dataGridParticipante.TabIndex = 1;
-            // 
-            // NomeUsuario
-            // 
-            this.NomeUsuario.HeaderText = "Nome";
-            this.NomeUsuario.MinimumWidth = 6;
-            this.NomeUsuario.Name = "NomeUsuario";
-            this.NomeUsuario.ReadOnly = true;
-            this.NomeUsuario.Width = 80;
-            // 
-            // Ip
-            // 
-            this.Ip.HeaderText = "IP";
-            this.Ip.MinimumWidth = 6;
-            this.Ip.Name = "Ip";
-            this.Ip.ReadOnly = true;
-            this.Ip.Width = 125;
-            // 
             // Nome
             // 
             this.Nome.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
@@ -252,6 +174,58 @@
             this.TempoRestante.ReadOnly = true;
             this.TempoRestante.Width = 85;
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.dataGridParticipante);
+            this.groupBox2.Location = new System.Drawing.Point(745, 14);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox2.Size = new System.Drawing.Size(319, 439);
+            this.groupBox2.TabIndex = 1;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Participantes";
+            // 
+            // dataGridParticipante
+            // 
+            this.dataGridParticipante.AllowUserToAddRows = false;
+            this.dataGridParticipante.AllowUserToDeleteRows = false;
+            this.dataGridParticipante.AllowUserToResizeColumns = false;
+            this.dataGridParticipante.AllowUserToResizeRows = false;
+            this.dataGridParticipante.BackgroundColor = System.Drawing.SystemColors.Control;
+            this.dataGridParticipante.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridParticipante.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.NomeUsuario,
+            this.Ip});
+            this.dataGridParticipante.Location = new System.Drawing.Point(19, 31);
+            this.dataGridParticipante.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.dataGridParticipante.MultiSelect = false;
+            this.dataGridParticipante.Name = "dataGridParticipante";
+            this.dataGridParticipante.ReadOnly = true;
+            this.dataGridParticipante.RowHeadersVisible = false;
+            this.dataGridParticipante.RowHeadersWidth = 51;
+            this.dataGridParticipante.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.dataGridParticipante.RowTemplate.Height = 24;
+            this.dataGridParticipante.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridParticipante.Size = new System.Drawing.Size(280, 316);
+            this.dataGridParticipante.TabIndex = 1;
+            // 
+            // NomeUsuario
+            // 
+            this.NomeUsuario.HeaderText = "Nome";
+            this.NomeUsuario.MinimumWidth = 6;
+            this.NomeUsuario.Name = "NomeUsuario";
+            this.NomeUsuario.ReadOnly = true;
+            this.NomeUsuario.Width = 80;
+            // 
+            // Ip
+            // 
+            this.Ip.HeaderText = "IP";
+            this.Ip.MinimumWidth = 6;
+            this.Ip.Name = "Ip";
+            this.Ip.ReadOnly = true;
+            this.Ip.Width = 125;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -281,8 +255,6 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.DataGridViewTextBoxColumn NomeUsuario;
         private System.Windows.Forms.DataGridViewTextBoxColumn Ip;
-        private System.Windows.Forms.Button btnNovoLance;
-        private System.Windows.Forms.Button btnNovoParticipante;
         private System.Windows.Forms.DataGridViewTextBoxColumn Nome;
         private System.Windows.Forms.DataGridViewTextBoxColumn Disp;
         private System.Windows.Forms.DataGridViewTextBoxColumn DonoAtual;
