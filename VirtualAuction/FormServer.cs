@@ -181,6 +181,10 @@ namespace AuctionServer
                     }
                 }
             }
+            else
+            {
+                MessageBox.Show("Selecione uma linha da tabela antes de tentar remover um item.", "Operação Inválida");
+            }
         }
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)

@@ -14,9 +14,13 @@ namespace AuctionServer
         {
             if (!String.IsNullOrEmpty(txtBoxNomeItem.Text) && !String.IsNullOrEmpty(txtBoxTempoDeLeilao.Text) && !String.IsNullOrEmpty(txtBoxValorInicial.Text) && !String.IsNullOrEmpty(txtBoxValorMin.Text))
             {
-                FormServer parentForm = (FormServer)this.Owner;
-                parentForm.AddLance(txtBoxNomeItem.Text, float.Parse(txtBoxValorInicial.Text), float.Parse(txtBoxValorMin.Text), int.Parse(txtBoxTempoDeLeilao.Text));
-                this.Dispose();
+                DialogResult dialogResult = MessageBox.Show("Tem certeza que deseja adicionar novo item ao leilão?", "Confirmação necessária", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    FormServer parentForm = (FormServer)this.Owner;
+                    parentForm.AddLance(txtBoxNomeItem.Text, float.Parse(txtBoxValorInicial.Text), float.Parse(txtBoxValorMin.Text), int.Parse(txtBoxTempoDeLeilao.Text));
+                    this.Dispose();
+                }
             }
             else
             {

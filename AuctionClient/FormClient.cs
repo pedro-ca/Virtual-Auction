@@ -14,7 +14,6 @@ namespace AuctionClient
 {
     public partial class FormClient : Form
     {
-        public List<Participante> ListaParticipantes = new List<Participante>();
         public List<ItemLance> ListaLances = new List<ItemLance>();
         public bool isAuditServer = true;
         MulticasterClient multicast = new MulticasterClient();
@@ -28,54 +27,15 @@ namespace AuctionClient
             t1.Start();
         }
 
-        
-        /*public void AddParticipante(string nomeUsuario, string ip, string certificadoDigital)   //server side
+
+
+        public void SendLance(float novoValorLance)
         {
-            Participante participanteTemp = new Participante(nomeUsuario, ip, certificadoDigital);
-            ListaParticipantes.Add(participanteTemp);
-            dataGridParticipante.Rows.Add(participanteTemp.NomeUsuario, participanteTemp.Ip);
+            if (dataGridItemLance.CurrentCell != null)
+            {
+                multicast.SendBuyMessage(dataGridItemLance.CurrentCell.RowIndex, novoValorLance, multicast.participanteAtual);
+            }
         }
-
-        public void AddLance(string nomeItem, float valorInicial, float valorAdicionalMinimo, int tempoRestante)    //server side
-        {
-            ItemLance itemLanceTemp = new ItemLance(nomeItem, valorInicial, valorAdicionalMinimo, valorInicial, "Leiloeiro", tempoRestante, true);
-            ListaLances.Add(itemLanceTemp);
-            dataGridItemLance.Rows.Add(itemLanceTemp.NomeItem, itemLanceTemp.EstaDisponivel, itemLanceTemp.DonoAtual, itemLanceTemp.ValorAtual, itemLanceTemp.ValorAdicionalMinimo, itemLanceTemp.TempoRestante);
-
-            multicast.SendUpdateMessage(ListaLances);
-        }*/
-        
-        /*public string UpdateLanceValorAtual(ItemLance itemLance, Participante participante, float valorLance)   //server side
-        {
-            if (itemLance.EstaDisponivel && ListaLances.Contains(itemLance))
-            {
-                if (valorLance >= itemLance.ValorAtual + itemLance.ValorAdicionalMinimo)
-                {
-                    int listIndex = ListaLances.IndexOf(itemLance);
-
-                    itemLance.ValorAtual = valorLance;
-                    itemLance.DonoAtual = participante.NomeUsuario;
-
-                    ListaLances[listIndex].ValorAtual = itemLance.ValorAtual;
-                    ListaLances[listIndex].DonoAtual = itemLance.DonoAtual;
-
-                    UpdateDataGridItemLance();
-
-                    multicast.SendUpdateMessage(ListaLances);
-
-                    return "Lance sucedido para o item '" + itemLance.NomeItem + "': \n  Lance de " + valorLance + " realizado com sucesso. \n  Novo dono do item: " + itemLance.DonoAtual;
-                }
-                else
-                {
-                    return "Lance inválido para o item '" + itemLance.NomeItem + "':\n  Valor de " + valorLance + " muito baixo. \n  Novos lances precisam de um incremento mínimo de " + itemLance.ValorAdicionalMinimo + " sobre o valor atual de " + itemLance.ValorAtual;
-                }
-            }
-            else
-            {
-                return "Lance inválido para o item '" + itemLance.NomeItem + "': \n  O item não está mais disponível ou não existe.";
-            }
-        }*/
-
         public void UpdateDataGridItemLance()
         {
             dataGridItemLance.Invoke(new MethodInvoker(() => { dataGridItemLance.Rows.Clear(); }));
@@ -138,7 +98,6 @@ namespace AuctionClient
                 {
                     message = message.Substring(multicast.comandoClear.Length);
                     ListaLances.Clear();
-                    ListaParticipantes.Clear();
                     UpdateDataGridItemLance();
                     multicast.SendJoinMessage(multicast.participanteAtual);
                     MessageBox.Show("O Servidor de Lances reiniciou. Todos os lances foram limpados.");
@@ -158,20 +117,18 @@ namespace AuctionClient
         {
             if (dataGridItemLance.CurrentCell != null)
             {
-                multicast.SendBuyMessage(dataGridItemLance.CurrentCell.RowIndex,1000,multicast.participanteAtual);
-                /*DialogResult dialogResult = MessageBox.Show("Tem certeza que deseja remover este item do leilão?", "Confirmação necessária", MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.Yes)
-                {
-                    int listIndex = dataGridItemLance.CurrentCell.RowIndex;
-                    ItemLance itemLance = ListaLances[listIndex];
-                    if (itemLance.EstaDisponivel)
-                    {
-                        itemLance.TempoRestante = 0;
+                float valorAtual = ListaLances[dataGridItemLance.CurrentCell.RowIndex].ValorAtual;
+                float valorAdicionalMinimo = ListaLances[dataGridItemLance.CurrentCell.RowIndex].ValorAdicionalMinimo;
 
-                        ListaLances[listIndex].TempoRestante = itemLance.TempoRestante;
-                        dataGridItemLance.Rows[listIndex].Cells[5].Value = itemLance.TempoRestante;
-                    }
-                }*/
+                var telaAdicionarItem = new BuyItem(valorAtual, valorAdicionalMinimo)
+                {
+                    Owner = this
+                };
+                telaAdicionarItem.Show();
+            }
+            else
+            {
+                MessageBox.Show("Selecione uma linha da tabela antes de tentar enviar um novo lance.", "Operação Inválida");
             }
         }
 
