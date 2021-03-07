@@ -101,11 +101,9 @@
     <Compile Include="FormServer.Designer.cs">
       <DependentUpon>FormServer.cs</DependentUpon>
     </Compile>
-    <Compile Include="ItemLance.cs" />
     <Compile Include="MulticasterServer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Participante.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AddItem.resx">
@@ -149,6 +147,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AuctionModel\AuctionModel.csproj">
+      <Project>{54A2A3C4-00E6-4B77-AD4F-7E0341325AD3}</Project>
+      <Name>AuctionModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

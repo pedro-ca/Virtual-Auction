@@ -9,7 +9,6 @@ VirtualAuction/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
 VirtualAuction/obj/Debug/DesignTimeResolveAssemblyReferences.cache
 VirtualAuction/obj/Debug/TempPE/Properties.Resources.Designer.cs.dll
 *.CopyComplete
-*.txt
 VirtualAuction/obj/Debug/AuctionServer.csproj.GenerateResource.cache
 VirtualAuction/obj/Debug/AuctionServer.exe
 VirtualAuction/obj/Debug/AuctionServer.pdb
@@ -23,3 +22,7 @@ AuctionClient/obj/Debug/AuctionClient.pdb
 AuctionClient/obj/Debug/AuctionClient.Properties.Resources.resources
 VirtualAuction/obj/Debug/AuctionServer.AddItem.resources
 VirtualAuction/obj/Debug/AuctionServer.FormServer.resources
+AuctionModel/obj/Debug/AuctionModel.dll
+AuctionModel/obj/Debug/AuctionModel.pdb
+AuctionModel/obj/Debug/AuctionModel.csproj.FileListAbsolute.txt
+*.TXT
