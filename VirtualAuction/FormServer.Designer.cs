@@ -42,6 +42,7 @@
             this.dataGridParticipante = new System.Windows.Forms.DataGridView();
             this.NomeUsuario = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Ip = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridItemLance)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -181,7 +182,7 @@
             this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox2.Size = new System.Drawing.Size(319, 439);
+            this.groupBox2.Size = new System.Drawing.Size(319, 232);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Participantes";
@@ -207,7 +208,7 @@
             this.dataGridParticipante.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dataGridParticipante.RowTemplate.Height = 24;
             this.dataGridParticipante.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridParticipante.Size = new System.Drawing.Size(280, 316);
+            this.dataGridParticipante.Size = new System.Drawing.Size(280, 187);
             this.dataGridParticipante.TabIndex = 1;
             // 
             // NomeUsuario
@@ -226,15 +227,25 @@
             this.Ip.ReadOnly = true;
             this.Ip.Width = 125;
             // 
-            // FormMain
+            // groupBox3
+            // 
+            this.groupBox3.Location = new System.Drawing.Point(748, 251);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(316, 200);
+            this.groupBox3.TabIndex = 2;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Mensagens do Leilão";
+            // 
+            // FormServer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1079, 464);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.Name = "FormMain";
+            this.Name = "FormServer";
             this.Text = "Leilão Server";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
             this.groupBox1.ResumeLayout(false);
@@ -261,6 +272,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ValAtual;
         private System.Windows.Forms.DataGridViewTextBoxColumn ValPorLance;
         private System.Windows.Forms.DataGridViewTextBoxColumn TempoRestante;
+        private System.Windows.Forms.GroupBox groupBox3;
     }
 }
 

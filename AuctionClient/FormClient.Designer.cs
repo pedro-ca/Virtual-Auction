@@ -38,6 +38,7 @@
             this.ValPorLance = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TempoRestante = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridItemLance)).BeginInit();
             this.SuspendLayout();
@@ -46,11 +47,11 @@
             // 
             this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.dataGridItemLance);
-            this.groupBox1.Location = new System.Drawing.Point(9, 10);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox1.Location = new System.Drawing.Point(12, 12);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox1.Size = new System.Drawing.Size(538, 357);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox1.Size = new System.Drawing.Size(717, 439);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Items em Leilão";
@@ -58,10 +59,10 @@
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(188, 301);
-            this.button1.Margin = new System.Windows.Forms.Padding(2);
+            this.button1.Location = new System.Drawing.Point(251, 370);
+            this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(163, 41);
+            this.button1.Size = new System.Drawing.Size(217, 50);
             this.button1.TabIndex = 2;
             this.button1.Text = "Enviar novo Lance para o Item";
             this.button1.UseVisualStyleBackColor = true;
@@ -82,8 +83,8 @@
             this.ValAtual,
             this.ValPorLance,
             this.TempoRestante});
-            this.dataGridItemLance.Location = new System.Drawing.Point(12, 25);
-            this.dataGridItemLance.Margin = new System.Windows.Forms.Padding(2);
+            this.dataGridItemLance.Location = new System.Drawing.Point(16, 31);
+            this.dataGridItemLance.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dataGridItemLance.MultiSelect = false;
             this.dataGridItemLance.Name = "dataGridItemLance";
             this.dataGridItemLance.ReadOnly = true;
@@ -92,7 +93,7 @@
             this.dataGridItemLance.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dataGridItemLance.RowTemplate.Height = 24;
             this.dataGridItemLance.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridItemLance.Size = new System.Drawing.Size(515, 258);
+            this.dataGridItemLance.Size = new System.Drawing.Size(687, 318);
             this.dataGridItemLance.TabIndex = 0;
             // 
             // Nome
@@ -157,23 +158,33 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Location = new System.Drawing.Point(559, 11);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox2.Location = new System.Drawing.Point(745, 14);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox2.Size = new System.Drawing.Size(239, 357);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox2.Size = new System.Drawing.Size(319, 232);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Cadastro";
+            this.groupBox2.Text = "Conectar ao Leilão";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Location = new System.Drawing.Point(745, 251);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(319, 200);
+            this.groupBox3.TabIndex = 3;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Mensagens do Leilão";
             // 
             // FormClient
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(809, 377);
+            this.ClientSize = new System.Drawing.Size(1079, 464);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "FormClient";
             this.Text = "Leilão Client";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
@@ -195,6 +206,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ValAtual;
         private System.Windows.Forms.DataGridViewTextBoxColumn ValPorLance;
         private System.Windows.Forms.DataGridViewTextBoxColumn TempoRestante;
+        private System.Windows.Forms.GroupBox groupBox3;
     }
 }
 
