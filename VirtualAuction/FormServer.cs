@@ -1,6 +1,9 @@
 ﻿using AuctionModel;
 using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Windows.Forms;
@@ -9,18 +12,32 @@ namespace AuctionServer
 {
     public partial class FormServer : Form
     {
+        public const int serverPort = 10002;
+        public const string serverAddress = "127.0.0.1";
+        IPAddress localAdd;
+        TcpListener listener;
+        TcpClient client;
+
         public List<Participante> ListaParticipantes = new List<Participante>();
         public List<ItemLance> ListaLances = new List<ItemLance>();
         public bool isAuditServer = true;
+
+
+
         MulticasterServer multicast = new MulticasterServer();
 
         public FormServer()
         {
+            localAdd = IPAddress.Parse(serverAddress);
+            listener = new TcpListener(localAdd, serverPort);
+            listener.Start();
+
             InitializeComponent();
             multicast.CustomEvent += ReceiveMessage;
             multicast.JoinGroup();
             Thread t1 = new Thread(new ThreadStart(this.DoTimeTick));
             t1.Start();
+
         }
 
         public void AddParticipante(Participante novoParticipante)   //server side
@@ -72,7 +89,8 @@ namespace AuctionServer
         public void UpdateDataGridItemLance()
         {
             dataGridItemLance.Invoke(new MethodInvoker(() => { dataGridItemLance.Rows.Clear(); }));
-            foreach (ItemLance item in ListaLances){
+            foreach (ItemLance item in ListaLances)
+            {
                 if (dataGridItemLance.InvokeRequired)
                 {
                     dataGridItemLance.Invoke(new MethodInvoker(() => { dataGridItemLance.Rows.Add(item.NomeItem, item.EstaDisponivel, item.DonoAtual, "$ " + item.ValorAtual, "$ " + item.ValorAdicionalMinimo, item.TempoRestante); }));
@@ -136,6 +154,27 @@ namespace AuctionServer
                         }
                     }
                 }
+                try
+                {
+                    client = listener.AcceptTcpClient();
+
+                    NetworkStream nwStream = client.GetStream();
+                    byte[] buffer = new byte[client.ReceiveBufferSize];
+
+                    int bytesRead = nwStream.Read(buffer, 0, client.ReceiveBufferSize);
+
+                    string dataReceived = Encoding.Unicode.GetString(buffer, 0, bytesRead);
+                    MessageBox.Show("Received = " + dataReceived);
+
+                    Console.WriteLine("Sending back : " + dataReceived);
+                    nwStream.Write(buffer, 0, bytesRead);
+                }
+                catch (Exception e)
+                {
+
+                    MessageBox.Show("Error: " + e.Message);
+                }
+
                 Thread.Sleep(1000);
             }
         }
@@ -170,7 +209,7 @@ namespace AuctionServer
                     }
                 }
             }
-            catch (Exception e )
+            catch (Exception e)
             {
                 MessageBox.Show("Error: " + e.Message);
             }
@@ -212,6 +251,8 @@ namespace AuctionServer
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             Application.DoEvents();
+            client.Close();
+            listener.Stop();
             multicast.LeaveGroup();
         }
     }

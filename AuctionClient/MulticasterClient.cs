@@ -34,7 +34,6 @@ namespace AuctionClient
         public readonly string comandoJoin = "#join=";
         //talvez adicionar um comando chamado comandoMessage, onde client e servidores adicionam messagens em um datagridview que faz log de transações.
 
-
         public void SendJoinMessage(Participante participante)      
         {
             string message = comandoJoin + JsonSerializer.Serialize(participante);

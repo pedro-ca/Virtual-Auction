@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Sockets;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Windows.Forms;
@@ -9,6 +13,9 @@ namespace AuctionClient
 {
     public partial class FormClient : Form
     {
+        public const int serverPort = 10002;
+        X509Certificate2 userCertificate;
+
         public List<ItemLance> ListaLances = new List<ItemLance>();
         public bool isAuditServer = true;
         MulticasterClient multicast = new MulticasterClient();
@@ -22,7 +29,38 @@ namespace AuctionClient
             t1.Start();
         }
 
+        public X509Certificate2 CreateCert(string user, string key)
+        {
+            ECDsa ecdsa = ECDsa.Create(); // generate asymmetric key pair
+            CertificateRequest req = new CertificateRequest("cn=" + key, ecdsa, HashAlgorithmName.SHA256);
+            X509Certificate2 cert = req.CreateSelfSigned(DateTimeOffset.Now, DateTimeOffset.Now.AddYears(5));
+            cert.FriendlyName = user;
 
+            return cert;
+        }
+
+        public void SendAuthRequest(X509Certificate2 certificate, string serverIp)
+        {
+            try
+            {
+                TcpClient client = new TcpClient(serverIp, serverPort);
+                NetworkStream nwStream = client.GetStream();
+                byte[] bytesToSend = ASCIIEncoding.Unicode.GetBytes("beep?"); //certificate.Export(X509ContentType.Cert);  ;
+
+                nwStream.Write(bytesToSend, 0, bytesToSend.Length);
+
+                byte[] bytesToRead = new byte[client.ReceiveBufferSize];
+                int bytesRead = nwStream.Read(bytesToRead, 0, client.ReceiveBufferSize);
+                string answer = Encoding.Unicode.GetString(bytesToRead, 0, bytesRead);
+                MessageBox.Show("Received back = " + answer);
+                Console.ReadLine();
+                client.Close();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Error: " + e.Message);
+            }
+        }
 
         public void SendLance(float novoValorLance)
         {
@@ -115,6 +153,12 @@ namespace AuctionClient
             }
         }
 
+        private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.DoEvents();
+            multicast.LeaveGroup();
+        }
+
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -135,10 +179,19 @@ namespace AuctionClient
             }
         }
 
-        private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
+        private void button2_Click_1(object sender, EventArgs e)
         {
-            Application.DoEvents();
-            multicast.LeaveGroup();
+            string username = txtBoxUsername.Text;
+            string certificateKey = txtBoxCertificateKey.Text;
+            string serverIp = txtBoxServerIp.Text;
+
+            userCertificate = CreateCert(username, certificateKey);
+            SendAuthRequest(userCertificate, serverIp);
+        }
+
+        private void txtBoxServerIp_TextChanged(object sender, EventArgs e)
+        {
+            txtBoxServerIp.Text = txtBoxServerIp.Text.Replace(" ", "");
         }
     }
 }
