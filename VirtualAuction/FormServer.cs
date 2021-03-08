@@ -15,6 +15,8 @@ namespace AuctionServer
     {
         public const int serverPort = 10002;
         public const string serverAddress = "127.0.0.1";
+        private string[] arrayPublicKeys = new string[5] { "senhaSecreta", "vacilo", "toExausto", "Beep", "olokobixo"};
+
         IPAddress localAdd;
         TcpListener listener;
         TcpClient client;
@@ -35,7 +37,6 @@ namespace AuctionServer
             multicast.JoinGroup();
             Thread t1 = new Thread(new ThreadStart(this.DoTimeTick));
             t1.Start();
-
         }
 
         public void ReceiveAuthRequest()
@@ -54,14 +55,34 @@ namespace AuctionServer
                 userCert.Import(buffer);
                 MessageBox.Show("Received = " + userCert.ToString());
 
-                byte[] bytesToSend = ASCIIEncoding.Unicode.GetBytes("ACK");
+                byte[] bytesToSend; 
+
+                if (VerifyCertificate(userCert)) {
+                    bytesToSend = ASCIIEncoding.Unicode.GetBytes("ACK");
+                }
+                else
+                {
+                   bytesToSend = ASCIIEncoding.Unicode.GetBytes("DENY");
+                }
+                
                 nwStream.Write(bytesToSend, 0, bytesToSend.Length);
             }
             catch (Exception e)
             {
-
                 MessageBox.Show("ReceiveAuthRequest Error:\n " + e.Message, "Exception Caught",MessageBoxButtons.OK,MessageBoxIcon.Error);
             }
+        }
+
+        public bool VerifyCertificate(X509Certificate2 cert)
+        {
+            foreach(string key in arrayPublicKeys)
+            {
+                if(cert.Subject == "CN="+key)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public void AddParticipante(Participante novoParticipante)   //server side

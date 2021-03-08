@@ -221,7 +221,6 @@
             this.txtBoxCertificateKey.Name = "txtBoxCertificateKey";
             this.txtBoxCertificateKey.Size = new System.Drawing.Size(272, 22);
             this.txtBoxCertificateKey.TabIndex = 6;
-            this.txtBoxCertificateKey.UseSystemPasswordChar = true;
             // 
             // label2
             // 
