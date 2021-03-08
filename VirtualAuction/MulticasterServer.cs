@@ -25,6 +25,8 @@ namespace AuctionServer
         private IPEndPoint multiCastEP = null;
         private bool stayAlive = true;
         private Thread t2 = null;
+
+        public string privateKey;       //yes, i know Ive declared a private key as public. not secure at all, but it just works
         RijndaelManaged rijndaelEncryption = new RijndaelManaged();
 
         public readonly string comandoClear = "#clear=";
@@ -64,16 +66,10 @@ namespace AuctionServer
                 if (!IPAddress.TryParse("224.0.0.251", out group))   //valor fixo
                     throw new ApplicationException("Invalid Multicast Group Address");
 
-                string rijKey = "default";              //valor fixo.       !!!! MUDAR PARA UM VALOR ALEATORIO POR CADA INSTANCIA DO SERVER !!!!
+                GerateRijandelKey();
 
-                while (rijKey.Length < 16)  //cambiarra f*dida. 16 caraceres é string ideal pra ser usado como key e iv
-                {
-                    rijKey += " ";
-                }
-
-                rijndaelEncryption.Key = Encoding.UTF8.GetBytes(rijKey);
-                rijndaelEncryption.IV = Encoding.UTF8.GetBytes(rijKey);        //seria melhor se o iv fosse aleatorio...
-
+                rijndaelEncryption.Key = Encoding.UTF8.GetBytes(privateKey);
+                rijndaelEncryption.IV = Encoding.UTF8.GetBytes(privateKey);        //seria melhor se o iv fosse aleatorio...
 
                 client = new UdpClient();
                 client.Client.ExclusiveAddressUse = false;
@@ -91,6 +87,21 @@ namespace AuctionServer
             {
                 MessageBox.Show("JoinGroup Error: \n" + e.Message, "Exception Caught", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        public void GerateRijandelKey()         //gera uma key aes aleatoria.  16 caraceres é string ideal pra ser usado como key e iv
+        {
+            Random rd = new Random();   
+            int stringLength = 16;
+            const string allowedChars = "ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz0123456789!@$?_-";
+            char[] chars = new char[stringLength];
+
+            for (int i = 0; i < stringLength; i++)
+            {
+                chars[i] = allowedChars[rd.Next(0, allowedChars.Length)];
+            }
+
+            privateKey = new string(chars);
         }
 
         public void LeaveGroup()

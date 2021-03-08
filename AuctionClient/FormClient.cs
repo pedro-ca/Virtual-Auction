@@ -50,9 +50,19 @@ namespace AuctionClient
 
                 byte[] bytesToRead = new byte[client.ReceiveBufferSize];
                 int bytesRead = nwStream.Read(bytesToRead, 0, client.ReceiveBufferSize);
-                string answer = Encoding.Unicode.GetString(bytesToRead, 0, bytesRead);
-                MessageBox.Show("Received back = " + answer);
-                Console.ReadLine();
+                string answer = Encoding.UTF8.GetString(bytesToRead, 0, bytesRead);
+                if (answer == "!deny=")
+                {
+                    MessageBox.Show("Certificate does not exist or invalid format.", "Auth Error", MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                }
+                else if (answer.StartsWith("!key="))
+                {
+                    answer = answer.Substring(multicast.comandoClear.Length);
+                    multicast.privateKey = answer;
+                    MessageBox.Show("Sucessfully logged in. Current Private Key:\n"+ multicast.privateKey, "Auth Completed", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                }
+
                 client.Close();
             }
             catch (Exception e)

@@ -35,6 +35,7 @@ namespace AuctionServer
             InitializeComponent();
             multicast.CustomEvent += ReceiveMessage;
             multicast.JoinGroup();
+            this.Text = "Leilão Server - Chave AES da sessão: " + multicast.privateKey;
             Thread t1 = new Thread(new ThreadStart(this.DoTimeTick));
             t1.Start();
         }
@@ -48,21 +49,29 @@ namespace AuctionServer
                 NetworkStream nwStream = client.GetStream();
                 byte[] buffer = new byte[client.ReceiveBufferSize];
 
-                
                 int bytesRead = nwStream.Read(buffer, 0, client.ReceiveBufferSize);
 
-                X509Certificate2 userCert = new X509Certificate2();
-                userCert.Import(buffer);
-                MessageBox.Show("Received = " + userCert.ToString());
 
-                byte[] bytesToSend; 
-
-                if (VerifyCertificate(userCert)) {
-                    bytesToSend = ASCIIEncoding.Unicode.GetBytes("ACK");
-                }
-                else
+                byte[] bytesToSend;
+                try
                 {
-                   bytesToSend = ASCIIEncoding.Unicode.GetBytes("DENY");
+                    X509Certificate2 userCert = new X509Certificate2();
+                    userCert.Import(buffer);
+                    MessageBox.Show("Received = " + userCert.ToString());
+
+
+                    if (VerifyCertificate(userCert))
+                    {
+                        bytesToSend = ASCIIEncoding.UTF8.GetBytes("!key=" + multicast.privateKey);
+                    }
+                    else
+                    {
+                        throw new FormatException(); 
+                    }
+                }
+                catch (FormatException)
+                {
+                    bytesToSend = ASCIIEncoding.UTF8.GetBytes("!deny=");
                 }
                 
                 nwStream.Write(bytesToSend, 0, bytesToSend.Length);

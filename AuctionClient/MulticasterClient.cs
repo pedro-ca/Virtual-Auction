@@ -24,6 +24,8 @@ namespace AuctionClient
         private IPEndPoint multiCastEP = null;
         private bool stayAlive = true;
         private Thread t2 = null;
+
+        public string privateKey;          //yes, i know Ive declared a private key as public. not secure at all, but it just works
         RijndaelManaged rijndaelEncryption = new RijndaelManaged();
 
         public Participante participanteAtual = new Participante("default","default","default");
