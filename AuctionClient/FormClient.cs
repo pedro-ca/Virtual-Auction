@@ -17,7 +17,6 @@ namespace AuctionClient
         X509Certificate2 userCertificate;
 
         public List<ItemLance> ListaLances = new List<ItemLance>();
-        public bool isAuditServer = true;
         MulticasterClient multicast = new MulticasterClient();
 
         public FormClient()
@@ -45,7 +44,7 @@ namespace AuctionClient
             {
                 TcpClient client = new TcpClient(serverIp, serverPort);
                 NetworkStream nwStream = client.GetStream();
-                byte[] bytesToSend = ASCIIEncoding.Unicode.GetBytes("beep?"); //certificate.Export(X509ContentType.Cert);  ;
+                byte[] bytesToSend = certificate.Export(X509ContentType.Cert);  //= ASCIIEncoding.Unicode.GetBytes("beep?");
 
                 nwStream.Write(bytesToSend, 0, bytesToSend.Length);
 
@@ -58,7 +57,7 @@ namespace AuctionClient
             }
             catch (Exception e)
             {
-                MessageBox.Show("Error: " + e.Message);
+                MessageBox.Show("SendAuthRequest Error:\n " + e.Message, "Exception Caught", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

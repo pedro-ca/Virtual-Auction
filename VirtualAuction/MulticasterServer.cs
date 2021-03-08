@@ -89,7 +89,7 @@ namespace AuctionServer
             }
             catch (Exception e)
             {
-                MessageBox.Show("An exception occurred when attempting to Join roup: \n" + e.ToString(), "Join Group Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("JoinGroup Error: \n" + e.Message, "Exception Caught", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -113,7 +113,7 @@ namespace AuctionServer
             }
             catch (Exception e)
             {
-                MessageBox.Show("An exception occurred when attempting to Leave Group: \n" + e.ToString(), "Leave Group Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Leave Group Error: \n" + e.Message, "Exception Caught", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

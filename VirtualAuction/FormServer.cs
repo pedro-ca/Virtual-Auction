@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
@@ -20,9 +21,6 @@ namespace AuctionServer
 
         public List<Participante> ListaParticipantes = new List<Participante>();
         public List<ItemLance> ListaLances = new List<ItemLance>();
-        public bool isAuditServer = true;
-
-
 
         MulticasterServer multicast = new MulticasterServer();
 
@@ -38,6 +36,32 @@ namespace AuctionServer
             Thread t1 = new Thread(new ThreadStart(this.DoTimeTick));
             t1.Start();
 
+        }
+
+        public void ReceiveAuthRequest()
+        {
+            try
+            {
+                client = listener.AcceptTcpClient();
+
+                NetworkStream nwStream = client.GetStream();
+                byte[] buffer = new byte[client.ReceiveBufferSize];
+
+                
+                int bytesRead = nwStream.Read(buffer, 0, client.ReceiveBufferSize);
+
+                X509Certificate2 userCert = new X509Certificate2();
+                userCert.Import(buffer);
+                MessageBox.Show("Received = " + userCert.ToString());
+
+                byte[] bytesToSend = ASCIIEncoding.Unicode.GetBytes("ACK");
+                nwStream.Write(bytesToSend, 0, bytesToSend.Length);
+            }
+            catch (Exception e)
+            {
+
+                MessageBox.Show("ReceiveAuthRequest Error:\n " + e.Message, "Exception Caught",MessageBoxButtons.OK,MessageBoxIcon.Error);
+            }
         }
 
         public void AddParticipante(Participante novoParticipante)   //server side
@@ -138,7 +162,7 @@ namespace AuctionServer
                                     ListaLances[listIndex].TempoRestante = itemLance.TempoRestante;
                                     dataGridItemLance.Rows[listIndex].Cells[5].Value = itemLance.TempoRestante;
                                 }
-                                else    //server side
+                                else
                                 {
                                     itemLance.EstaDisponivel = false;
                                     ListaLances[listIndex].EstaDisponivel = itemLance.EstaDisponivel;
@@ -150,30 +174,11 @@ namespace AuctionServer
                         }
                         catch (Exception e)
                         {
-                            Console.WriteLine("Error: " + e.Message);
+                            MessageBox.Show("DoTimeTick Error:\n" + e.Message, "Exception Caught", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
                 }
-                try
-                {
-                    client = listener.AcceptTcpClient();
-
-                    NetworkStream nwStream = client.GetStream();
-                    byte[] buffer = new byte[client.ReceiveBufferSize];
-
-                    int bytesRead = nwStream.Read(buffer, 0, client.ReceiveBufferSize);
-
-                    string dataReceived = Encoding.Unicode.GetString(buffer, 0, bytesRead);
-                    MessageBox.Show("Received = " + dataReceived);
-
-                    Console.WriteLine("Sending back : " + dataReceived);
-                    nwStream.Write(buffer, 0, bytesRead);
-                }
-                catch (Exception e)
-                {
-
-                    MessageBox.Show("Error: " + e.Message);
-                }
+                ReceiveAuthRequest();
 
                 Thread.Sleep(1000);
             }
@@ -191,7 +196,6 @@ namespace AuctionServer
                         message = message.Substring(multicast.comandoJoin.Length);
                         multicast.SendUpdateMessage(ListaLances);
                         AddParticipante(JsonSerializer.Deserialize<Participante>(message));
-                        // MessageBox.Show("comandoJoin = " + message);
                     }
                     else if (message.StartsWith(multicast.comandoBuy))      //Buy Operation. Format: #buy= index, value, Participante
                     {
