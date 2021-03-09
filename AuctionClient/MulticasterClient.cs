@@ -28,12 +28,14 @@ namespace AuctionClient
         public string privateKey;          //yes, i know Ive declared a private key as public. not secure at all, but it just works
         RijndaelManaged rijndaelEncryption = new RijndaelManaged();
 
-        public Participante participanteAtual = new Participante("default","default","default");
+        public Participante participanteAtual;
 
         public readonly string comandoClear = "#clear=";
         public readonly string comandoUpdate = "#update=";
         public readonly string comandoBuy = "#buy=";
         public readonly string comandoJoin = "#join=";
+        public readonly string comandoKey = "!key=";
+        public readonly string comandoDeny = "!deny=";
         //talvez adicionar um comando chamado comandoMessage, onde client e servidores adicionam messagens em um datagridview que faz log de transações.
 
         public void SendJoinMessage(Participante participante)      
@@ -68,16 +70,8 @@ namespace AuctionClient
                 if (!IPAddress.TryParse("224.0.0.251", out group))   //valor fixo
                     throw new ApplicationException("Invalid Multicast Group Address");
 
-                string rijKey = "default";              //valor fixo.       !!!! MUDAR PARA UM VALOR ALEATORIO POR CADA INSTANCIA DO SERVER !!!!
-
-                while (rijKey.Length < 16)  //cambiarra f*dida. 16 caraceres é string ideal pra ser usado como key e iv
-                {
-                    rijKey += " ";
-                }
-
-                rijndaelEncryption.Key = Encoding.UTF8.GetBytes(rijKey);
-                rijndaelEncryption.IV = Encoding.UTF8.GetBytes(rijKey);        //seria melhor se o iv fosse aleatorio...
-
+                rijndaelEncryption.Key = Encoding.UTF8.GetBytes(privateKey);
+                rijndaelEncryption.IV = Encoding.UTF8.GetBytes(privateKey);        //seria melhor se o iv fosse aleatorio...
 
                 client = new UdpClient();
                 client.Client.ExclusiveAddressUse = false;
@@ -101,7 +95,7 @@ namespace AuctionClient
         {
             try
             {
-                if (group != null)
+                if (group != null && t2 != null && client != null)
                 {
                     Thread.Sleep(500);
                     stayAlive = false;
@@ -117,7 +111,7 @@ namespace AuctionClient
             }
             catch (Exception e)
             {
-                MessageBox.Show("LeaveGroup Error: \n" + e.Message, "Exception Caught", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("LeaveGroup Error:\n" + e.Message, "Exception Caught", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

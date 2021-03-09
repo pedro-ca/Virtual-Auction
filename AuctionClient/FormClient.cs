@@ -23,7 +23,7 @@ namespace AuctionClient
         {
             InitializeComponent();
             multicast.CustomEvent += ReceiveMessage;
-            multicast.JoinGroup();
+            //multicast.JoinGroup();
             Thread t1 = new Thread(new ThreadStart(this.DoTimeTick));
             t1.Start();
         }
@@ -51,23 +51,25 @@ namespace AuctionClient
                 byte[] bytesToRead = new byte[client.ReceiveBufferSize];
                 int bytesRead = nwStream.Read(bytesToRead, 0, client.ReceiveBufferSize);
                 string answer = Encoding.UTF8.GetString(bytesToRead, 0, bytesRead);
-                if (answer == "!deny=")
+                if (answer == multicast.comandoDeny)
                 {
                     MessageBox.Show("Certificate does not exist or invalid format.", "Auth Error", MessageBoxButtons.OK,MessageBoxIcon.Warning);
                 }
-                else if (answer.StartsWith("!key="))
+                else if (answer.StartsWith(multicast.comandoKey))
                 {
-                    answer = answer.Substring(multicast.comandoClear.Length);
+                    answer = answer.Substring(multicast.comandoKey.Length);
                     multicast.privateKey = answer;
+                    multicast.participanteAtual = new Participante(txtBoxUsername.Text, "exampleip" , txtBoxServerIp.Text) ;
+                    multicast.JoinGroup();
+                    groupBoxItens.Enabled = true;
                     MessageBox.Show("Sucessfully logged in. Current Private Key:\n"+ multicast.privateKey, "Auth Completed", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
                 }
 
                 client.Close();
             }
             catch (Exception e)
             {
-                MessageBox.Show("SendAuthRequest Error:\n " + e.Message, "Exception Caught", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("SendAuthRequest Error:\n" + e.Message, "Exception Caught", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -144,7 +146,7 @@ namespace AuctionClient
                         ListaLances.Clear();
                         UpdateDataGridItemLance();
                         multicast.SendJoinMessage(multicast.participanteAtual);
-                        MessageBox.Show("O Servidor de Lances reiniciou. Todos os lances foram limpados.");
+                        MessageBox.Show("O Servidor de Lances reiniciou. Todos os lances foram limpos.");
                     }
                     else if (message.StartsWith(multicast.comandoUpdate))   //Update operation. Format: #update=List<ItemLance>
                     {
@@ -190,12 +192,23 @@ namespace AuctionClient
 
         private void button2_Click_1(object sender, EventArgs e)
         {
-            string username = txtBoxUsername.Text;
-            string certificateKey = txtBoxCertificateKey.Text;
-            string serverIp = txtBoxServerIp.Text;
+            if (!String.IsNullOrEmpty(txtBoxCertificateKey.Text) && !String.IsNullOrEmpty(txtBoxServerIp.Text) && !String.IsNullOrEmpty(txtBoxUsername.Text))
+            {
+                DialogResult dialogResult = MessageBox.Show("Tem certeza que deseja se conectar ao servidor?", "Confirmação necessária", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    string username = txtBoxUsername.Text;
+                    string certificateKey = txtBoxCertificateKey.Text;
+                    string serverIp = txtBoxServerIp.Text;
 
-            userCertificate = CreateCert(username, certificateKey);
-            SendAuthRequest(userCertificate, serverIp);
+                    userCertificate = CreateCert(username, certificateKey);
+                    SendAuthRequest(userCertificate, serverIp);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Preencha todos os campos antes de tentar se conectar.", "Dados Inválidos");
+            }
         }
 
         private void txtBoxServerIp_TextChanged(object sender, EventArgs e)

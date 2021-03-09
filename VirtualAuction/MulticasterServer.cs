@@ -24,7 +24,7 @@ namespace AuctionServer
         private int port = 0;
         private IPEndPoint multiCastEP = null;
         private bool stayAlive = true;
-        private Thread t2 = null;
+        private Thread t3 = null;
 
         public string privateKey;       //yes, i know Ive declared a private key as public. not secure at all, but it just works
         RijndaelManaged rijndaelEncryption = new RijndaelManaged();
@@ -33,6 +33,8 @@ namespace AuctionServer
         public readonly string comandoUpdate = "#update=";
         public readonly string comandoBuy = "#buy=";
         public readonly string comandoJoin = "#join=";
+        public readonly string comandoKey = "!key=";
+        public readonly string comandoDeny = "!deny=";
 
         public void SendClearMessage()
         {
@@ -78,8 +80,8 @@ namespace AuctionServer
                 multiCastEP = new IPEndPoint(group, port);
                 client.Client.Bind(new IPEndPoint(IPAddress.Any, port));
                 this.stayAlive = true;
-                t2 = new Thread(this.RunThread);
-                t2.Start();
+                t3 = new Thread(this.RunThread);
+                t3.Start();
 
                 SendClearMessage();
             }
@@ -112,7 +114,7 @@ namespace AuctionServer
                 {
                     Thread.Sleep(500);
                     stayAlive = false;
-                    t2.Abort();
+                    t3.Abort();
                     client.DropMulticastGroup(group);
                     client.Close();
                     client = null;

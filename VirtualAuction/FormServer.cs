@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.InteropServices.ComTypes;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Json;
@@ -38,47 +39,52 @@ namespace AuctionServer
             this.Text = "Leilão Server - Chave AES da sessão: " + multicast.privateKey;
             Thread t1 = new Thread(new ThreadStart(this.DoTimeTick));
             t1.Start();
+            Thread t2 = new Thread(new ThreadStart(this.ReceiveAuthRequest));
+            t2.Start();
         }
 
         public void ReceiveAuthRequest()
         {
-            try
+            while (!this.IsDisposed && Thread.CurrentThread.IsAlive)
             {
-                client = listener.AcceptTcpClient();
-
-                NetworkStream nwStream = client.GetStream();
-                byte[] buffer = new byte[client.ReceiveBufferSize];
-
-                int bytesRead = nwStream.Read(buffer, 0, client.ReceiveBufferSize);
-
-
-                byte[] bytesToSend;
                 try
                 {
-                    X509Certificate2 userCert = new X509Certificate2();
-                    userCert.Import(buffer);
-                    MessageBox.Show("Received = " + userCert.ToString());
+                    client = listener.AcceptTcpClient();
+
+                    NetworkStream nwStream = client.GetStream();
+                    byte[] buffer = new byte[client.ReceiveBufferSize];
+
+                    int bytesRead = nwStream.Read(buffer, 0, client.ReceiveBufferSize);
 
 
-                    if (VerifyCertificate(userCert))
+                    byte[] bytesToSend;
+                    try
                     {
-                        bytesToSend = ASCIIEncoding.UTF8.GetBytes("!key=" + multicast.privateKey);
+                        X509Certificate2 userCert = new X509Certificate2();
+                        userCert.Import(buffer);
+                        MessageBox.Show("Received = " + userCert.ToString());
+
+
+                        if (VerifyCertificate(userCert))
+                        {
+                            bytesToSend = ASCIIEncoding.UTF8.GetBytes(multicast.comandoKey + multicast.privateKey);
+                        }
+                        else
+                        {
+                            throw new FormatException();
+                        }
                     }
-                    else
+                    catch (FormatException)
                     {
-                        throw new FormatException(); 
+                        bytesToSend = ASCIIEncoding.UTF8.GetBytes(multicast.comandoDeny);
                     }
+
+                    nwStream.Write(bytesToSend, 0, bytesToSend.Length);
                 }
-                catch (FormatException)
+                catch (Exception e)
                 {
-                    bytesToSend = ASCIIEncoding.UTF8.GetBytes("!deny=");
+                    MessageBox.Show("ReceiveAuthRequest Error:\n " + e.Message, "Exception Caught", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                
-                nwStream.Write(bytesToSend, 0, bytesToSend.Length);
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show("ReceiveAuthRequest Error:\n " + e.Message, "Exception Caught",MessageBoxButtons.OK,MessageBoxIcon.Error);
             }
         }
 
@@ -174,7 +180,7 @@ namespace AuctionServer
 
         public void DoTimeTick()
         {
-            while (!this.IsDisposed)
+            while (!this.IsDisposed && Thread.CurrentThread.IsAlive)
             {
                 if (ListaLances.Count > 0 && dataGridItemLance != null)
                 {
@@ -208,8 +214,6 @@ namespace AuctionServer
                         }
                     }
                 }
-                ReceiveAuthRequest();
-
                 Thread.Sleep(1000);
             }
         }
@@ -285,8 +289,14 @@ namespace AuctionServer
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             Application.DoEvents();
-            client.Close();
-            listener.Stop();
+            if(client != null)
+            {
+                client.Close();
+            }
+            if (listener != null)
+            {
+                listener.Stop();
+            }
             multicast.LeaveGroup();
         }
     }
