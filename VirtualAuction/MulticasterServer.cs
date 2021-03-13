@@ -26,7 +26,7 @@ namespace AuctionServer
         private bool stayAlive = true;
         private Thread t3 = null;
 
-        public string privateKey;       //yes, i know Ive declared a private key as public. not secure at all, but it just works
+        public string privateSessionKey;       //yes, i know Ive declared a private key as public. not secure at all, but it just works
         RijndaelManaged rijndaelEncryption = new RijndaelManaged();
 
         public readonly string comandoClear = "#clear=";
@@ -70,8 +70,8 @@ namespace AuctionServer
 
                 GerateRijandelKey();
 
-                rijndaelEncryption.Key = Encoding.UTF8.GetBytes(privateKey);
-                rijndaelEncryption.IV = Encoding.UTF8.GetBytes(privateKey);        //seria melhor se o iv fosse aleatorio...
+                rijndaelEncryption.Key = Encoding.UTF8.GetBytes(privateSessionKey);
+                rijndaelEncryption.IV = Encoding.UTF8.GetBytes(privateSessionKey);        //seria melhor se o iv fosse aleatorio...
 
                 client = new UdpClient();
                 client.Client.ExclusiveAddressUse = false;
@@ -103,7 +103,7 @@ namespace AuctionServer
                 chars[i] = allowedChars[rd.Next(0, allowedChars.Length)];
             }
 
-            privateKey = new string(chars);
+            privateSessionKey = new string(chars);
         }
 
         public void LeaveGroup()

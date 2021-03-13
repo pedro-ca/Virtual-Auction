@@ -23,17 +23,15 @@ namespace AuctionClient
         {
             InitializeComponent();
             multicast.CustomEvent += ReceiveMessage;
-            //multicast.JoinGroup();
             Thread t1 = new Thread(new ThreadStart(this.DoTimeTick));
             t1.Start();
         }
 
-        public X509Certificate2 CreateCert(string user, string key)
+        public X509Certificate2 CreateCert(string user)
         {
             ECDsa ecdsa = ECDsa.Create(); // generate asymmetric key pair
-            CertificateRequest req = new CertificateRequest("cn=" + key, ecdsa, HashAlgorithmName.SHA256);
+            CertificateRequest req = new CertificateRequest("cn=" + user, ecdsa, HashAlgorithmName.SHA256);
             X509Certificate2 cert = req.CreateSelfSigned(DateTimeOffset.Now, DateTimeOffset.Now.AddYears(5));
-            cert.FriendlyName = user;
 
             return cert;
         }
@@ -59,10 +57,10 @@ namespace AuctionClient
                 {
                     answer = answer.Substring(multicast.comandoKey.Length);
                     multicast.privateKey = answer;
-                    multicast.participanteAtual = new Participante(txtBoxUsername.Text, "exampleip" , txtBoxServerIp.Text) ;
+                    multicast.participanteAtual = new Participante(txtBoxUsername.Text, "exampleip") ;
                     multicast.JoinGroup();
                     groupBoxItens.Enabled = true;
-                    MessageBox.Show("Sucessfully logged in. Current Private Key:\n"+ multicast.privateKey, "Auth Completed", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Sucessfully logged in. Current Session's Private Key:\n"+ multicast.privateKey, "Auth Completed", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
 
                 client.Close();
@@ -201,7 +199,7 @@ namespace AuctionClient
                     string certificateKey = txtBoxCertificateKey.Text;
                     string serverIp = txtBoxServerIp.Text;
 
-                    userCertificate = CreateCert(username, certificateKey);
+                    userCertificate = CreateCert(username);
                     SendAuthRequest(userCertificate, serverIp);
                 }
             }

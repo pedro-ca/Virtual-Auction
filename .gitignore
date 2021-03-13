@@ -26,3 +26,6 @@ AuctionModel/obj/Debug/AuctionModel.dll
 AuctionModel/obj/Debug/AuctionModel.pdb
 AuctionModel/obj/Debug/AuctionModel.csproj.FileListAbsolute.txt
 *.TXT
+VirtualAuction/obj/Debug/.NETFramework,Version=v4.7.2.AssemblyAttributes.cs
+AuctionClient/obj/Debug/.NETFramework,Version=v4.7.2.AssemblyAttributes.cs
+AuctionModel/obj/Debug/.NETFramework,Version=v4.7.2.AssemblyAttributes.cs

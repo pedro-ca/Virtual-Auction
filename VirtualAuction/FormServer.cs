@@ -16,7 +16,9 @@ namespace AuctionServer
     {
         public const int serverPort = 10002;
         public const string serverAddress = "127.0.0.1";
-        private string[] arrayPublicKeys = new string[5] { "senhaSecreta", "vacilo", "toExausto", "Beep", "olokobixo"};
+        //private string[] arrayPublicKeys = new string[5] { "senhaSecreta", "vacilo", "toExausto", "Beep", "olokobixo"};
+        private Dictionary<string, string> dictClientKey = new Dictionary<string, string>();
+
 
         IPAddress localAdd;
         TcpListener listener;
@@ -29,6 +31,8 @@ namespace AuctionServer
 
         public FormServer()
         {
+            InitializeClientKeys();
+
             localAdd = IPAddress.Parse(serverAddress);
             listener = new TcpListener(localAdd, serverPort);
             listener.Start();
@@ -36,11 +40,20 @@ namespace AuctionServer
             InitializeComponent();
             multicast.CustomEvent += ReceiveMessage;
             multicast.JoinGroup();
-            this.Text = "Leilão Server - Chave AES da sessão: " + multicast.privateKey;
+            this.Text = "Leilão Server - Chave AES da sessão: " + multicast.privateSessionKey;
             Thread t1 = new Thread(new ThreadStart(this.DoTimeTick));
             t1.Start();
             Thread t2 = new Thread(new ThreadStart(this.ReceiveAuthRequest));
             t2.Start();
+        }
+    
+        public void InitializeClientKeys()
+        {
+            dictClientKey.Add("CN=Anonymous", "hackerman");
+            dictClientKey.Add("CN=Beep", "beep");
+            dictClientKey.Add("CN=Faustao", "olokobixo");
+            dictClientKey.Add("CN=eren", "Tatakae");
+            dictClientKey.Add("CN=heavyTF2", "pootis");
         }
 
         public void ReceiveAuthRequest()
@@ -67,7 +80,7 @@ namespace AuctionServer
 
                         if (VerifyCertificate(userCert))
                         {
-                            bytesToSend = ASCIIEncoding.UTF8.GetBytes(multicast.comandoKey + multicast.privateKey);
+                            bytesToSend = ASCIIEncoding.UTF8.GetBytes(multicast.comandoKey + multicast.privateSessionKey);
                         }
                         else
                         {
@@ -90,14 +103,22 @@ namespace AuctionServer
 
         public bool VerifyCertificate(X509Certificate2 cert)
         {
-            foreach(string key in arrayPublicKeys)
+            if (dictClientKey.ContainsKey(cert.Subject))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            /*foreach(string key in arrayPublicKeys)
             {
                 if(cert.Subject == "CN="+key)
                 {
                     return true;
                 }
             }
-            return false;
+            return false;*/
         }
 
         public void AddParticipante(Participante novoParticipante)   //server side

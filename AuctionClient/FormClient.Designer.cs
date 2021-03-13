@@ -57,9 +57,9 @@
             this.groupBoxItens.Controls.Add(this.dataGridItemLance);
             this.groupBoxItens.Enabled = false;
             this.groupBoxItens.Location = new System.Drawing.Point(9, 10);
-            this.groupBoxItens.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBoxItens.Margin = new System.Windows.Forms.Padding(2);
             this.groupBoxItens.Name = "groupBoxItens";
-            this.groupBoxItens.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBoxItens.Padding = new System.Windows.Forms.Padding(2);
             this.groupBoxItens.Size = new System.Drawing.Size(538, 357);
             this.groupBoxItens.TabIndex = 0;
             this.groupBoxItens.TabStop = false;
@@ -69,7 +69,7 @@
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.Location = new System.Drawing.Point(188, 301);
-            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(163, 41);
             this.button1.TabIndex = 2;
@@ -93,7 +93,7 @@
             this.ValPorLance,
             this.TempoRestante});
             this.dataGridItemLance.Location = new System.Drawing.Point(12, 25);
-            this.dataGridItemLance.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dataGridItemLance.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridItemLance.MultiSelect = false;
             this.dataGridItemLance.Name = "dataGridItemLance";
             this.dataGridItemLance.ReadOnly = true;
@@ -175,9 +175,9 @@
             this.groupBoxConnect.Controls.Add(this.txtBoxUsername);
             this.groupBoxConnect.Controls.Add(this.label1);
             this.groupBoxConnect.Location = new System.Drawing.Point(559, 11);
-            this.groupBoxConnect.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBoxConnect.Margin = new System.Windows.Forms.Padding(2);
             this.groupBoxConnect.Name = "groupBoxConnect";
-            this.groupBoxConnect.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBoxConnect.Padding = new System.Windows.Forms.Padding(2);
             this.groupBoxConnect.Size = new System.Drawing.Size(239, 188);
             this.groupBoxConnect.TabIndex = 1;
             this.groupBoxConnect.TabStop = false;
@@ -187,7 +187,7 @@
             // 
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button2.Location = new System.Drawing.Point(77, 147);
-            this.button2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button2.Margin = new System.Windows.Forms.Padding(2);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(80, 27);
             this.button2.TabIndex = 3;
@@ -198,7 +198,7 @@
             // txtBoxServerIp
             // 
             this.txtBoxServerIp.Location = new System.Drawing.Point(18, 115);
-            this.txtBoxServerIp.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtBoxServerIp.Margin = new System.Windows.Forms.Padding(2);
             this.txtBoxServerIp.MaxLength = 15;
             this.txtBoxServerIp.Name = "txtBoxServerIp";
             this.txtBoxServerIp.Size = new System.Drawing.Size(205, 20);
@@ -219,7 +219,7 @@
             // txtBoxCertificateKey
             // 
             this.txtBoxCertificateKey.Location = new System.Drawing.Point(18, 78);
-            this.txtBoxCertificateKey.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtBoxCertificateKey.Margin = new System.Windows.Forms.Padding(2);
             this.txtBoxCertificateKey.MaxLength = 10;
             this.txtBoxCertificateKey.Name = "txtBoxCertificateKey";
             this.txtBoxCertificateKey.Size = new System.Drawing.Size(205, 20);
@@ -231,14 +231,14 @@
             this.label2.Location = new System.Drawing.Point(16, 61);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(109, 13);
+            this.label2.Size = new System.Drawing.Size(56, 13);
             this.label2.TabIndex = 5;
-            this.label2.Text = "Chave do Certificado:";
+            this.label2.Text = "Password:";
             // 
             // txtBoxUsername
             // 
             this.txtBoxUsername.Location = new System.Drawing.Point(18, 41);
-            this.txtBoxUsername.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtBoxUsername.Margin = new System.Windows.Forms.Padding(2);
             this.txtBoxUsername.MaxLength = 15;
             this.txtBoxUsername.Name = "txtBoxUsername";
             this.txtBoxUsername.Size = new System.Drawing.Size(205, 20);
@@ -257,9 +257,9 @@
             // groupBoxMessages
             // 
             this.groupBoxMessages.Location = new System.Drawing.Point(559, 204);
-            this.groupBoxMessages.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBoxMessages.Margin = new System.Windows.Forms.Padding(2);
             this.groupBoxMessages.Name = "groupBoxMessages";
-            this.groupBoxMessages.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBoxMessages.Padding = new System.Windows.Forms.Padding(2);
             this.groupBoxMessages.Size = new System.Drawing.Size(239, 162);
             this.groupBoxMessages.TabIndex = 3;
             this.groupBoxMessages.TabStop = false;
@@ -274,7 +274,7 @@
             this.Controls.Add(this.groupBoxConnect);
             this.Controls.Add(this.groupBoxItens);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.Name = "FormClient";
             this.Text = "Leilão Client";

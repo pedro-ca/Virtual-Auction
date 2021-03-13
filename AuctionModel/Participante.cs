@@ -6,13 +6,11 @@ namespace AuctionModel
     {
         public string NomeUsuario { get; set; }
         public string Ip { get; set; }
-        public string CertifcadoDigital { get; set; }
 
-        public Participante(string nomeUsuario, string ip, string certifcadoDigital)
+        public Participante(string nomeUsuario, string ip)
         {
             this.NomeUsuario = nomeUsuario;
             this.Ip = ip;
-            this.CertifcadoDigital = certifcadoDigital;
         }
     }
 }
