@@ -65,7 +65,7 @@
             // 
             this.txtBoxTempoDeLeilao.Location = new System.Drawing.Point(9, 105);
             this.txtBoxTempoDeLeilao.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.txtBoxTempoDeLeilao.MaxLength = 10;
+            this.txtBoxTempoDeLeilao.MaxLength = 8;
             this.txtBoxTempoDeLeilao.Name = "txtBoxTempoDeLeilao";
             this.txtBoxTempoDeLeilao.Size = new System.Drawing.Size(131, 22);
             this.txtBoxTempoDeLeilao.TabIndex = 3;

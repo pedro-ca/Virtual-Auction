@@ -32,17 +32,17 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.dataGridItemLance = new System.Windows.Forms.DataGridView();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.dataGridParticipante = new System.Windows.Forms.DataGridView();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.NomeUsuario = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Ip = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Nome = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Disp = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DonoAtual = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ValAtual = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ValPorLance = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TempoRestante = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.dataGridParticipante = new System.Windows.Forms.DataGridView();
-            this.NomeUsuario = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Ip = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridItemLance)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -115,66 +115,6 @@
             this.dataGridItemLance.Size = new System.Drawing.Size(687, 318);
             this.dataGridItemLance.TabIndex = 0;
             // 
-            // Nome
-            // 
-            this.Nome.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.Nome.HeaderText = "Nome";
-            this.Nome.MaxInputLength = 300;
-            this.Nome.MinimumWidth = 6;
-            this.Nome.Name = "Nome";
-            this.Nome.ReadOnly = true;
-            this.Nome.Width = 75;
-            // 
-            // Disp
-            // 
-            this.Disp.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.Disp.HeaderText = "Disp.";
-            this.Disp.MaxInputLength = 300;
-            this.Disp.MinimumWidth = 6;
-            this.Disp.Name = "Disp";
-            this.Disp.ReadOnly = true;
-            this.Disp.Width = 65;
-            // 
-            // DonoAtual
-            // 
-            this.DonoAtual.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.DonoAtual.HeaderText = "Dono Atual";
-            this.DonoAtual.MaxInputLength = 300;
-            this.DonoAtual.MinimumWidth = 6;
-            this.DonoAtual.Name = "DonoAtual";
-            this.DonoAtual.ReadOnly = true;
-            this.DonoAtual.Width = 95;
-            // 
-            // ValAtual
-            // 
-            this.ValAtual.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.ValAtual.HeaderText = "Valor Atual";
-            this.ValAtual.MaxInputLength = 300;
-            this.ValAtual.MinimumWidth = 6;
-            this.ValAtual.Name = "ValAtual";
-            this.ValAtual.ReadOnly = true;
-            this.ValAtual.Width = 95;
-            // 
-            // ValPorLance
-            // 
-            this.ValPorLance.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.ValPorLance.HeaderText = "Val. p/ Lance";
-            this.ValPorLance.MaxInputLength = 300;
-            this.ValPorLance.MinimumWidth = 6;
-            this.ValPorLance.Name = "ValPorLance";
-            this.ValPorLance.ReadOnly = true;
-            this.ValPorLance.Width = 95;
-            // 
-            // TempoRestante
-            // 
-            this.TempoRestante.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.TempoRestante.HeaderText = "Tempo";
-            this.TempoRestante.MaxInputLength = 300;
-            this.TempoRestante.MinimumWidth = 6;
-            this.TempoRestante.Name = "TempoRestante";
-            this.TempoRestante.ReadOnly = true;
-            this.TempoRestante.Width = 85;
-            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.dataGridParticipante);
@@ -211,9 +151,20 @@
             this.dataGridParticipante.Size = new System.Drawing.Size(280, 187);
             this.dataGridParticipante.TabIndex = 1;
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Location = new System.Drawing.Point(748, 251);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox3.Size = new System.Drawing.Size(316, 199);
+            this.groupBox3.TabIndex = 2;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Auction Messages";
+            // 
             // NomeUsuario
             // 
-            this.NomeUsuario.HeaderText = "Nome";
+            this.NomeUsuario.HeaderText = "Name";
             this.NomeUsuario.MinimumWidth = 6;
             this.NomeUsuario.Name = "NomeUsuario";
             this.NomeUsuario.ReadOnly = true;
@@ -227,16 +178,65 @@
             this.Ip.ReadOnly = true;
             this.Ip.Width = 125;
             // 
-            // groupBox3
+            // Nome
             // 
-            this.groupBox3.Location = new System.Drawing.Point(748, 251);
-            this.groupBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox3.Size = new System.Drawing.Size(316, 199);
-            this.groupBox3.TabIndex = 2;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Auction Messages";
+            this.Nome.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.Nome.HeaderText = "Name";
+            this.Nome.MaxInputLength = 300;
+            this.Nome.MinimumWidth = 6;
+            this.Nome.Name = "Nome";
+            this.Nome.ReadOnly = true;
+            this.Nome.Width = 75;
+            // 
+            // Disp
+            // 
+            this.Disp.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.Disp.HeaderText = "Available";
+            this.Disp.MaxInputLength = 300;
+            this.Disp.MinimumWidth = 6;
+            this.Disp.Name = "Disp";
+            this.Disp.ReadOnly = true;
+            this.Disp.Width = 65;
+            // 
+            // DonoAtual
+            // 
+            this.DonoAtual.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.DonoAtual.HeaderText = "Owner";
+            this.DonoAtual.MaxInputLength = 300;
+            this.DonoAtual.MinimumWidth = 6;
+            this.DonoAtual.Name = "DonoAtual";
+            this.DonoAtual.ReadOnly = true;
+            this.DonoAtual.Width = 95;
+            // 
+            // ValAtual
+            // 
+            this.ValAtual.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.ValAtual.HeaderText = "Current Value";
+            this.ValAtual.MaxInputLength = 300;
+            this.ValAtual.MinimumWidth = 6;
+            this.ValAtual.Name = "ValAtual";
+            this.ValAtual.ReadOnly = true;
+            this.ValAtual.Width = 95;
+            // 
+            // ValPorLance
+            // 
+            this.ValPorLance.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.ValPorLance.HeaderText = "Minimun bid ";
+            this.ValPorLance.MaxInputLength = 300;
+            this.ValPorLance.MinimumWidth = 6;
+            this.ValPorLance.Name = "ValPorLance";
+            this.ValPorLance.ReadOnly = true;
+            this.ValPorLance.Width = 95;
+            // 
+            // TempoRestante
+            // 
+            this.TempoRestante.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.TempoRestante.HeaderText = "Time";
+            this.TempoRestante.MaxInputLength = 300;
+            this.TempoRestante.MinimumWidth = 6;
+            this.TempoRestante.Name = "TempoRestante";
+            this.TempoRestante.ReadOnly = true;
+            this.TempoRestante.Width = 85;
             // 
             // FormServer
             // 
@@ -268,6 +268,7 @@
         private System.Windows.Forms.DataGridView dataGridParticipante;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.DataGridViewTextBoxColumn NomeUsuario;
         private System.Windows.Forms.DataGridViewTextBoxColumn Ip;
         private System.Windows.Forms.DataGridViewTextBoxColumn Nome;
@@ -276,7 +277,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ValAtual;
         private System.Windows.Forms.DataGridViewTextBoxColumn ValPorLance;
         private System.Windows.Forms.DataGridViewTextBoxColumn TempoRestante;
-        private System.Windows.Forms.GroupBox groupBox3;
     }
 }
 

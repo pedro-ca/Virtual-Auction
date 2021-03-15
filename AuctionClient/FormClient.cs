@@ -203,7 +203,7 @@ namespace AuctionClient
             }
             else
             {
-                MessageBox.Show("Selecione uma linha da tabela antes de tentar enviar um novo lance.", "Operação Inválida");
+                MessageBox.Show("Select at least one row of the table before trying make a bid.", "Invalid Operation");
             }
         }
 
@@ -211,7 +211,7 @@ namespace AuctionClient
         {
             if (!String.IsNullOrEmpty(txtBoxCertificateKey.Text) && !String.IsNullOrEmpty(txtBoxServerIp.Text) && !String.IsNullOrEmpty(txtBoxUsername.Text))
             {
-                DialogResult dialogResult = MessageBox.Show("Tem certeza que deseja se conectar ao servidor?", "Confirmação necessária", MessageBoxButtons.YesNo);
+                DialogResult dialogResult = MessageBox.Show("Are you sure you want to connect to the server?", "Confirmation Necessary", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
                     string username = txtBoxUsername.Text;
@@ -224,7 +224,7 @@ namespace AuctionClient
             }
             else
             {
-                MessageBox.Show("Fill all fields before trying to connect with the server.", "Invalid data.");
+                MessageBox.Show("Fill all fields before trying to connect with the server.", "Invalid data");
             }
         }
 

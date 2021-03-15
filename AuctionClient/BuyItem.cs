@@ -20,7 +20,7 @@ namespace AuctionClient
             if (!String.IsNullOrEmpty(this.textBoxNovoLance.Text))
             {
                 float valorNovoLance = float.Parse(textBoxNovoLance.Text);
-                DialogResult dialogResult = MessageBox.Show("Tem certeza que deseja enviar um lance no valor de $"+valorNovoLance.ToString()+"?", "Confirmação necessária", MessageBoxButtons.YesNo);
+                DialogResult dialogResult = MessageBox.Show("Are you sure you want to send a bid of $"+valorNovoLance.ToString()+"?", "Confirmation Necessary", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
                     if (valorNovoLance >= LanceMinimo)
@@ -31,7 +31,7 @@ namespace AuctionClient
                     }
                     else
                     {
-                        MessageBox.Show("O seu lance dever maior ou igual ao a valor mínimo do lance:\n$" + LanceMinimo.ToString(), "Dados Inválidos");
+                        MessageBox.Show("Your bid must be equal or higher than:\n$" + LanceMinimo.ToString(), "Invalid data");
                     }
                 }
             }

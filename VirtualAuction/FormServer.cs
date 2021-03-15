@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.InteropServices.ComTypes;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -38,7 +37,7 @@ namespace AuctionServer
             listener.Start();
 
             InitializeComponent();
-            multicast.CustomEvent += ReceiveMessage;
+            multicast.CustomEvent += ReceiveMulticastMessage;
             multicast.JoinGroup();
             this.Text = "Leilão Server - Chave AES da sessão: " + multicast.privateSessionKey;
             Thread t1 = new Thread(new ThreadStart(this.DoTimeTick));
@@ -115,10 +114,10 @@ namespace AuctionServer
         public void AddParticipante(AuctionParticipant novoParticipante)   //server side
         {
             ListaParticipantes.Add(novoParticipante);
-            UpdateDataGridParticipante();
+            UpdateDataGridParticipant();
         }
 
-        public void AddLance(string nomeItem, float valorInicial, float valorAdicionalMinimo, int tempoRestante)    //server side
+        public void AddAuction(string nomeItem, float valorInicial, float valorAdicionalMinimo, int tempoRestante)    //server side
         {
             AuctionItem itemLanceTemp = new AuctionItem(nomeItem, valorInicial, valorAdicionalMinimo, valorInicial, "Leiloeiro", tempoRestante, true);
             ListaLances.Add(itemLanceTemp);
@@ -127,7 +126,7 @@ namespace AuctionServer
             multicast.SendUpdateMessage(ListaLances);
         }
 
-        public string UpdateLanceValorAtual(AuctionItem itemLance, AuctionParticipant participante, float valorLance)   //server side
+        public string UpdateCurrentValue(AuctionItem itemLance, AuctionParticipant participante, float valorLance)   //server side
         {
             if (itemLance.IsAvailable && ListaLances.Contains(itemLance))
             {
@@ -141,7 +140,7 @@ namespace AuctionServer
                     ListaLances[listIndex].CurrentValue = itemLance.CurrentValue;
                     ListaLances[listIndex].CurrentOwner = itemLance.CurrentOwner;
 
-                    UpdateDataGridItemLance();
+                    UpdateDataGridAuctionItem();
 
                     multicast.SendUpdateMessage(ListaLances);
 
@@ -158,7 +157,7 @@ namespace AuctionServer
             }
         }
 
-        public void UpdateDataGridItemLance()
+        public void UpdateDataGridAuctionItem()
         {
             dataGridItemLance.Invoke(new MethodInvoker(() => { dataGridItemLance.Rows.Clear(); }));
             foreach (AuctionItem item in ListaLances)
@@ -174,7 +173,7 @@ namespace AuctionServer
             }
         }
 
-        public void UpdateDataGridParticipante()
+        public void UpdateDataGridParticipant()
         {
             dataGridParticipante.Invoke(new MethodInvoker(() => { dataGridParticipante.Rows.Clear(); }));
             foreach (AuctionParticipant participante in ListaParticipantes)
@@ -230,7 +229,7 @@ namespace AuctionServer
             }
         }
 
-        private void ReceiveMessage(string message)
+        private void ReceiveMulticastMessage(string message)
         {
             try
             {
@@ -255,7 +254,7 @@ namespace AuctionServer
 
                         AuctionParticipant newOwner = JsonSerializer.Deserialize<AuctionParticipant>(message);      //deserialize the remaining message to Participante object
 
-                        UpdateLanceValorAtual(ListaLances[indexList], newOwner, audictValue);
+                        UpdateCurrentValue(ListaLances[indexList], newOwner, audictValue);
                     }
                 }
             }

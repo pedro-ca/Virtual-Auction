@@ -18,13 +18,13 @@ namespace AuctionServer
                 if (dialogResult == DialogResult.Yes)
                 {
                     FormServer parentForm = (FormServer)this.Owner;
-                    parentForm.AddLance(txtBoxNomeItem.Text, float.Parse(txtBoxValorInicial.Text), float.Parse(txtBoxValorMin.Text), int.Parse(txtBoxTempoDeLeilao.Text));
+                    parentForm.AddAuction(txtBoxNomeItem.Text, float.Parse(txtBoxValorInicial.Text), float.Parse(txtBoxValorMin.Text), int.Parse(txtBoxTempoDeLeilao.Text));
                     this.Dispose();
                 }
             }
             else
             {
-                MessageBox.Show("Fill all fields before trying to add a new item to auction.", "Invalid data.");
+                MessageBox.Show("Fill all fields before trying to add a new item to auction.", "Invalid data");
             }
         }
 
