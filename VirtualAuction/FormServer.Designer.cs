@@ -54,22 +54,22 @@
             this.groupBox1.Controls.Add(this.button2);
             this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.dataGridItemLance);
-            this.groupBox1.Location = new System.Drawing.Point(9, 10);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Location = new System.Drawing.Point(12, 12);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox1.Size = new System.Drawing.Size(538, 357);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox1.Size = new System.Drawing.Size(717, 439);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Items em Leilão";
+            this.groupBox1.Text = "Items in Auction";
             // 
             // button2
             // 
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(364, 301);
-            this.button2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button2.Location = new System.Drawing.Point(485, 370);
+            this.button2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(163, 41);
+            this.button2.Size = new System.Drawing.Size(217, 50);
             this.button2.TabIndex = 2;
             this.button2.Text = "Remover Item do Leilão";
             this.button2.UseVisualStyleBackColor = true;
@@ -78,10 +78,10 @@
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(12, 301);
-            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button1.Location = new System.Drawing.Point(16, 370);
+            this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(163, 41);
+            this.button1.Size = new System.Drawing.Size(217, 50);
             this.button1.TabIndex = 1;
             this.button1.Text = "Adicionar Item ao Leilão";
             this.button1.UseVisualStyleBackColor = true;
@@ -102,8 +102,8 @@
             this.ValAtual,
             this.ValPorLance,
             this.TempoRestante});
-            this.dataGridItemLance.Location = new System.Drawing.Point(12, 25);
-            this.dataGridItemLance.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dataGridItemLance.Location = new System.Drawing.Point(16, 31);
+            this.dataGridItemLance.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dataGridItemLance.MultiSelect = false;
             this.dataGridItemLance.Name = "dataGridItemLance";
             this.dataGridItemLance.ReadOnly = true;
@@ -112,7 +112,7 @@
             this.dataGridItemLance.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dataGridItemLance.RowTemplate.Height = 24;
             this.dataGridItemLance.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridItemLance.Size = new System.Drawing.Size(515, 258);
+            this.dataGridItemLance.Size = new System.Drawing.Size(687, 318);
             this.dataGridItemLance.TabIndex = 0;
             // 
             // Nome
@@ -178,14 +178,14 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.dataGridParticipante);
-            this.groupBox2.Location = new System.Drawing.Point(559, 11);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Location = new System.Drawing.Point(745, 14);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox2.Size = new System.Drawing.Size(239, 188);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox2.Size = new System.Drawing.Size(319, 231);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Participantes";
+            this.groupBox2.Text = "Participants";
             // 
             // dataGridParticipante
             // 
@@ -198,8 +198,8 @@
             this.dataGridParticipante.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.NomeUsuario,
             this.Ip});
-            this.dataGridParticipante.Location = new System.Drawing.Point(14, 25);
-            this.dataGridParticipante.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dataGridParticipante.Location = new System.Drawing.Point(19, 31);
+            this.dataGridParticipante.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dataGridParticipante.MultiSelect = false;
             this.dataGridParticipante.Name = "dataGridParticipante";
             this.dataGridParticipante.ReadOnly = true;
@@ -208,7 +208,7 @@
             this.dataGridParticipante.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dataGridParticipante.RowTemplate.Height = 24;
             this.dataGridParticipante.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridParticipante.Size = new System.Drawing.Size(210, 152);
+            this.dataGridParticipante.Size = new System.Drawing.Size(280, 187);
             this.dataGridParticipante.TabIndex = 1;
             // 
             // NomeUsuario
@@ -229,28 +229,28 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Location = new System.Drawing.Point(561, 204);
-            this.groupBox3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox3.Location = new System.Drawing.Point(748, 251);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox3.Size = new System.Drawing.Size(237, 162);
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox3.Size = new System.Drawing.Size(316, 199);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Mensagens do Leilão";
+            this.groupBox3.Text = "Auction Messages";
             // 
             // FormServer
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(809, 377);
+            this.ClientSize = new System.Drawing.Size(1079, 464);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.MaximizeBox = false;
             this.Name = "FormServer";
-            this.Text = "Leilão Server";
+            this.Text = "Auction Server";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridItemLance)).EndInit();

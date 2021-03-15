@@ -52,129 +52,125 @@
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.txtBoxNomeItem);
             this.groupBox2.Controls.Add(this.label1);
-            this.groupBox2.Location = new System.Drawing.Point(9, 10);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Location = new System.Drawing.Point(12, 12);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox2.Size = new System.Drawing.Size(253, 120);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox2.Size = new System.Drawing.Size(337, 148);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Detalhes do Novo Item";
+            this.groupBox2.Text = "Item Details";
             // 
             // txtBoxTempoDeLeilao
             // 
-            this.txtBoxTempoDeLeilao.Location = new System.Drawing.Point(7, 85);
-            this.txtBoxTempoDeLeilao.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtBoxTempoDeLeilao.Location = new System.Drawing.Point(9, 105);
+            this.txtBoxTempoDeLeilao.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtBoxTempoDeLeilao.MaxLength = 10;
             this.txtBoxTempoDeLeilao.Name = "txtBoxTempoDeLeilao";
-            this.txtBoxTempoDeLeilao.Size = new System.Drawing.Size(99, 20);
+            this.txtBoxTempoDeLeilao.Size = new System.Drawing.Size(131, 22);
             this.txtBoxTempoDeLeilao.TabIndex = 3;
             this.txtBoxTempoDeLeilao.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBoxTempoDeLeilao_KeyPress);
             // 
             // txtBoxValorMin
             // 
-            this.txtBoxValorMin.Location = new System.Drawing.Point(136, 85);
-            this.txtBoxValorMin.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtBoxValorMin.Location = new System.Drawing.Point(181, 105);
+            this.txtBoxValorMin.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtBoxValorMin.MaxLength = 7;
             this.txtBoxValorMin.Name = "txtBoxValorMin";
-            this.txtBoxValorMin.Size = new System.Drawing.Size(99, 20);
+            this.txtBoxValorMin.Size = new System.Drawing.Size(131, 22);
             this.txtBoxValorMin.TabIndex = 4;
             this.txtBoxValorMin.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBoxValorMin_KeyPress);
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(134, 70);
-            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label4.Location = new System.Drawing.Point(179, 86);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(104, 13);
+            this.label4.Size = new System.Drawing.Size(127, 17);
             this.label4.TabIndex = 6;
-            this.label4.Text = "Valor Min. por lance:";
+            this.label4.Text = "Min. Value per Bid:";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(4, 70);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label3.Location = new System.Drawing.Point(5, 86);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(89, 13);
+            this.label3.Size = new System.Drawing.Size(94, 17);
             this.label3.TabIndex = 4;
-            this.label3.Text = "Tempo de Leilão:";
+            this.label3.Text = "Auction TIme:";
             // 
             // txtBoxValorInicial
             // 
-            this.txtBoxValorInicial.Location = new System.Drawing.Point(136, 37);
-            this.txtBoxValorInicial.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtBoxValorInicial.Location = new System.Drawing.Point(181, 46);
+            this.txtBoxValorInicial.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtBoxValorInicial.MaxLength = 7;
             this.txtBoxValorInicial.Name = "txtBoxValorInicial";
-            this.txtBoxValorInicial.Size = new System.Drawing.Size(99, 20);
+            this.txtBoxValorInicial.Size = new System.Drawing.Size(131, 22);
             this.txtBoxValorInicial.TabIndex = 2;
             this.txtBoxValorInicial.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBoxValorInicial_KeyPress);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(134, 22);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Location = new System.Drawing.Point(179, 27);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(64, 13);
+            this.label2.Size = new System.Drawing.Size(84, 17);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Valor Inicial:";
+            this.label2.Text = "Initial Value:";
             // 
             // txtBoxNomeItem
             // 
-            this.txtBoxNomeItem.Location = new System.Drawing.Point(7, 37);
-            this.txtBoxNomeItem.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtBoxNomeItem.Location = new System.Drawing.Point(9, 46);
+            this.txtBoxNomeItem.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtBoxNomeItem.MaxLength = 12;
             this.txtBoxNomeItem.Name = "txtBoxNomeItem";
-            this.txtBoxNomeItem.Size = new System.Drawing.Size(99, 20);
+            this.txtBoxNomeItem.Size = new System.Drawing.Size(131, 22);
             this.txtBoxNomeItem.TabIndex = 1;
             this.txtBoxNomeItem.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBoxNomeItem_KeyPress);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(4, 22);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Location = new System.Drawing.Point(6, 27);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(76, 13);
+            this.label1.Size = new System.Drawing.Size(79, 17);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Nome do Item:";
+            this.label1.Text = "Item Name:";
             // 
             // btnAdicionar
             // 
-            this.btnAdicionar.Location = new System.Drawing.Point(9, 145);
-            this.btnAdicionar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnAdicionar.Location = new System.Drawing.Point(12, 178);
+            this.btnAdicionar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnAdicionar.Name = "btnAdicionar";
-            this.btnAdicionar.Size = new System.Drawing.Size(66, 25);
+            this.btnAdicionar.Size = new System.Drawing.Size(88, 31);
             this.btnAdicionar.TabIndex = 5;
-            this.btnAdicionar.Text = "Adicionar";
+            this.btnAdicionar.Text = "Add";
             this.btnAdicionar.UseVisualStyleBackColor = true;
             this.btnAdicionar.Click += new System.EventHandler(this.button1_Click);
             // 
             // btnCancelar
             // 
-            this.btnCancelar.Location = new System.Drawing.Point(196, 145);
-            this.btnCancelar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnCancelar.Location = new System.Drawing.Point(261, 178);
+            this.btnCancelar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(66, 25);
+            this.btnCancelar.Size = new System.Drawing.Size(88, 31);
             this.btnCancelar.TabIndex = 6;
-            this.btnCancelar.Text = "Cancelar";
+            this.btnCancelar.Text = "Cancel";
             this.btnCancelar.UseVisualStyleBackColor = true;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
             // 
             // AddItem
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(272, 180);
+            this.ClientSize = new System.Drawing.Size(363, 222);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnAdicionar);
             this.Controls.Add(this.groupBox2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "AddItem";
-            this.Text = "Novo Lance";
+            this.Text = "New Item Auction";
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);

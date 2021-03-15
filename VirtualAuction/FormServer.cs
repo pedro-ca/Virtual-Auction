@@ -278,7 +278,7 @@ namespace AuctionServer
         {
             if (dataGridItemLance.CurrentCell != null)
             {
-                DialogResult dialogResult = MessageBox.Show("Tem certeza que deseja remover este item do leilão?", "Confirmação necessária", MessageBoxButtons.YesNo);
+                DialogResult dialogResult = MessageBox.Show("Are you sure you want to remove the item from auction?", "Confirmation necessary", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
                     int listIndex = dataGridItemLance.CurrentCell.RowIndex;
@@ -294,7 +294,7 @@ namespace AuctionServer
             }
             else
             {
-                MessageBox.Show("Selecione uma linha da tabela antes de tentar remover um item.", "Operação Inválida");
+                MessageBox.Show("Select at least one row of the table before trying to remove an item.", "Invalid Operation");
             }
         }
 

@@ -14,7 +14,7 @@ namespace AuctionServer
         {
             if (!String.IsNullOrEmpty(txtBoxNomeItem.Text) && !String.IsNullOrEmpty(txtBoxTempoDeLeilao.Text) && !String.IsNullOrEmpty(txtBoxValorInicial.Text) && !String.IsNullOrEmpty(txtBoxValorMin.Text))
             {
-                DialogResult dialogResult = MessageBox.Show("Tem certeza que deseja adicionar novo item ao leilão?", "Confirmação necessária", MessageBoxButtons.YesNo);
+                DialogResult dialogResult = MessageBox.Show("Are you sure you want to add a new item for auction?", "Confirmation Necessary", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
                     FormServer parentForm = (FormServer)this.Owner;
@@ -24,7 +24,7 @@ namespace AuctionServer
             }
             else
             {
-                MessageBox.Show("Preencha todos os campos antes de adicionar novo item.", "Dados Inválidos");
+                MessageBox.Show("Fill all fields before trying to add a new item to auction.", "Invalid data.");
             }
         }
 
