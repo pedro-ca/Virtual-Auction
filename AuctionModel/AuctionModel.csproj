@@ -41,8 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ItemLance.cs" />
-    <Compile Include="Participante.cs" />
+    <Compile Include="AuctionItem.cs" />
+    <Compile Include="AuctionParticipant.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

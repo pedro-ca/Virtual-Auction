@@ -24,8 +24,8 @@ namespace AuctionServer
         TcpListener listener;
         TcpClient client;
 
-        public List<Participante> ListaParticipantes = new List<Participante>();
-        public List<ItemLance> ListaLances = new List<ItemLance>();
+        public List<AuctionParticipant> ListaParticipantes = new List<AuctionParticipant>();
+        public List<AuctionItem> ListaLances = new List<AuctionItem>();
 
         MulticasterServer multicast = new MulticasterServer();
 
@@ -92,7 +92,6 @@ namespace AuctionServer
                             bytesToSend = multicast.EncryptStringToBytes(multicast.comandoKey + multicast.privateSessionKey, rijndaelEncryption.Key, rijndaelEncryption.IV);
 
                             string debugString = multicast.DecryptStringFromBytes(bytesToSend, rijndaelEncryption.Key, rijndaelEncryption.IV);
-                            rijndaelEncryption.Dispose();
                         }
                         else
                         {
@@ -113,7 +112,7 @@ namespace AuctionServer
             }
         }
 
-        public void AddParticipante(Participante novoParticipante)   //server side
+        public void AddParticipante(AuctionParticipant novoParticipante)   //server side
         {
             ListaParticipantes.Add(novoParticipante);
             UpdateDataGridParticipante();
@@ -121,56 +120,56 @@ namespace AuctionServer
 
         public void AddLance(string nomeItem, float valorInicial, float valorAdicionalMinimo, int tempoRestante)    //server side
         {
-            ItemLance itemLanceTemp = new ItemLance(nomeItem, valorInicial, valorAdicionalMinimo, valorInicial, "Leiloeiro", tempoRestante, true);
+            AuctionItem itemLanceTemp = new AuctionItem(nomeItem, valorInicial, valorAdicionalMinimo, valorInicial, "Leiloeiro", tempoRestante, true);
             ListaLances.Add(itemLanceTemp);
-            dataGridItemLance.Rows.Add(itemLanceTemp.NomeItem, itemLanceTemp.EstaDisponivel, itemLanceTemp.DonoAtual, "$ " + itemLanceTemp.ValorAtual, "$ " + itemLanceTemp.ValorAdicionalMinimo, itemLanceTemp.TempoRestante);
+            dataGridItemLance.Rows.Add(itemLanceTemp.ItemName, itemLanceTemp.IsAvailable, itemLanceTemp.CurrentOwner, "$ " + itemLanceTemp.CurrentValue, "$ " + itemLanceTemp.MinAditionalValue, itemLanceTemp.RemainingTime);
 
             multicast.SendUpdateMessage(ListaLances);
         }
 
-        public string UpdateLanceValorAtual(ItemLance itemLance, Participante participante, float valorLance)   //server side
+        public string UpdateLanceValorAtual(AuctionItem itemLance, AuctionParticipant participante, float valorLance)   //server side
         {
-            if (itemLance.EstaDisponivel && ListaLances.Contains(itemLance))
+            if (itemLance.IsAvailable && ListaLances.Contains(itemLance))
             {
-                if (valorLance >= itemLance.ValorAtual + itemLance.ValorAdicionalMinimo)
+                if (valorLance >= itemLance.CurrentValue + itemLance.MinAditionalValue)
                 {
                     int listIndex = ListaLances.IndexOf(itemLance);
 
-                    itemLance.ValorAtual = valorLance;
-                    itemLance.DonoAtual = participante.NomeUsuario;
+                    itemLance.CurrentValue = valorLance;
+                    itemLance.CurrentOwner = participante.UserName;
 
-                    ListaLances[listIndex].ValorAtual = itemLance.ValorAtual;
-                    ListaLances[listIndex].DonoAtual = itemLance.DonoAtual;
+                    ListaLances[listIndex].CurrentValue = itemLance.CurrentValue;
+                    ListaLances[listIndex].CurrentOwner = itemLance.CurrentOwner;
 
                     UpdateDataGridItemLance();
 
                     multicast.SendUpdateMessage(ListaLances);
 
-                    return "Lance sucedido para o item '" + itemLance.NomeItem + "': \n  Lance de " + valorLance + " realizado com sucesso. \n  Novo dono do item: " + itemLance.DonoAtual;
+                    return "Lance sucedido para o item '" + itemLance.ItemName + "': \n  Lance de " + valorLance + " realizado com sucesso. \n  Novo dono do item: " + itemLance.CurrentOwner;
                 }
                 else
                 {
-                    return "Lance inválido para o item '" + itemLance.NomeItem + "':\n  Valor de " + valorLance + " muito baixo. \n  Novos lances precisam de um incremento mínimo de " + itemLance.ValorAdicionalMinimo + " sobre o valor atual de " + itemLance.ValorAtual;
+                    return "Lance inválido para o item '" + itemLance.ItemName + "':\n  Valor de " + valorLance + " muito baixo. \n  Novos lances precisam de um incremento mínimo de " + itemLance.MinAditionalValue + " sobre o valor atual de " + itemLance.CurrentValue;
                 }
             }
             else
             {
-                return "Lance inválido para o item '" + itemLance.NomeItem + "': \n  O item não está mais disponível ou não existe.";
+                return "Lance inválido para o item '" + itemLance.ItemName + "': \n  O item não está mais disponível ou não existe.";
             }
         }
 
         public void UpdateDataGridItemLance()
         {
             dataGridItemLance.Invoke(new MethodInvoker(() => { dataGridItemLance.Rows.Clear(); }));
-            foreach (ItemLance item in ListaLances)
+            foreach (AuctionItem item in ListaLances)
             {
                 if (dataGridItemLance.InvokeRequired)
                 {
-                    dataGridItemLance.Invoke(new MethodInvoker(() => { dataGridItemLance.Rows.Add(item.NomeItem, item.EstaDisponivel, item.DonoAtual, "$ " + item.ValorAtual, "$ " + item.ValorAdicionalMinimo, item.TempoRestante); }));
+                    dataGridItemLance.Invoke(new MethodInvoker(() => { dataGridItemLance.Rows.Add(item.ItemName, item.IsAvailable, item.CurrentOwner, "$ " + item.CurrentValue, "$ " + item.MinAditionalValue, item.RemainingTime); }));
                 }
                 else
                 {
-                    dataGridItemLance.Rows.Add(item.NomeItem, item.EstaDisponivel, item.DonoAtual, "$ " + item.ValorAtual, "$ " + item.ValorAdicionalMinimo, item.TempoRestante);
+                    dataGridItemLance.Rows.Add(item.ItemName, item.IsAvailable, item.CurrentOwner, "$ " + item.CurrentValue, "$ " + item.MinAditionalValue, item.RemainingTime);
                 }
             }
         }
@@ -178,11 +177,11 @@ namespace AuctionServer
         public void UpdateDataGridParticipante()
         {
             dataGridParticipante.Invoke(new MethodInvoker(() => { dataGridParticipante.Rows.Clear(); }));
-            foreach (Participante participante in ListaParticipantes)
+            foreach (AuctionParticipant participante in ListaParticipantes)
             {
                 if (dataGridParticipante.InvokeRequired)
                 {
-                    dataGridParticipante.Invoke(new MethodInvoker(() => { dataGridParticipante.Rows.Add(participante.NomeUsuario, participante.Ip); }));
+                    dataGridParticipante.Invoke(new MethodInvoker(() => { dataGridParticipante.Rows.Add(participante.UserName, participante.Ip); }));
                 }
                 else
                 {
@@ -197,25 +196,25 @@ namespace AuctionServer
             {
                 if (ListaLances.Count > 0 && dataGridItemLance != null)
                 {
-                    foreach (ItemLance itemLance in ListaLances)
+                    foreach (AuctionItem itemLance in ListaLances)
                     {
                         try
                         {
-                            if (itemLance.EstaDisponivel)
+                            if (itemLance.IsAvailable)
                             {
                                 int listIndex = ListaLances.IndexOf(itemLance);
 
-                                if (itemLance.TempoRestante > 0)
+                                if (itemLance.RemainingTime > 0)
                                 {
-                                    itemLance.TempoRestante--;
-                                    ListaLances[listIndex].TempoRestante = itemLance.TempoRestante;
-                                    dataGridItemLance.Rows[listIndex].Cells[5].Value = itemLance.TempoRestante;
+                                    itemLance.RemainingTime--;
+                                    ListaLances[listIndex].RemainingTime = itemLance.RemainingTime;
+                                    dataGridItemLance.Rows[listIndex].Cells[5].Value = itemLance.RemainingTime;
                                 }
                                 else
                                 {
-                                    itemLance.EstaDisponivel = false;
-                                    ListaLances[listIndex].EstaDisponivel = itemLance.EstaDisponivel;
-                                    dataGridItemLance.Rows[listIndex].Cells[1].Value = itemLance.EstaDisponivel;
+                                    itemLance.IsAvailable = false;
+                                    ListaLances[listIndex].IsAvailable = itemLance.IsAvailable;
+                                    dataGridItemLance.Rows[listIndex].Cells[1].Value = itemLance.IsAvailable;
 
                                     multicast.SendUpdateMessage(ListaLances);
                                 }
@@ -242,7 +241,7 @@ namespace AuctionServer
                     {
                         message = message.Substring(multicast.comandoJoin.Length);
                         multicast.SendUpdateMessage(ListaLances);
-                        AddParticipante(JsonSerializer.Deserialize<Participante>(message));
+                        AddParticipante(JsonSerializer.Deserialize<AuctionParticipant>(message));
                     }
                     else if (message.StartsWith(multicast.comandoBuy))      //Buy Operation. Format: #buy= index, value, Participante
                     {
@@ -254,7 +253,7 @@ namespace AuctionServer
                         float audictValue = float.Parse(message.Substring(0, message.IndexOf(',')));   //get content before the second ',', The value of the transaction 
                         message = message.Substring(message.IndexOf(',') + 1);       //remove content from 0 to ','
 
-                        Participante newOwner = JsonSerializer.Deserialize<Participante>(message);      //deserialize the remaining message to Participante object
+                        AuctionParticipant newOwner = JsonSerializer.Deserialize<AuctionParticipant>(message);      //deserialize the remaining message to Participante object
 
                         UpdateLanceValorAtual(ListaLances[indexList], newOwner, audictValue);
                     }
@@ -283,13 +282,13 @@ namespace AuctionServer
                 if (dialogResult == DialogResult.Yes)
                 {
                     int listIndex = dataGridItemLance.CurrentCell.RowIndex;
-                    ItemLance itemLance = ListaLances[listIndex];
-                    if (itemLance.EstaDisponivel)
+                    AuctionItem itemLance = ListaLances[listIndex];
+                    if (itemLance.IsAvailable)
                     {
-                        itemLance.TempoRestante = 0;
+                        itemLance.RemainingTime = 0;
 
-                        ListaLances[listIndex].TempoRestante = itemLance.TempoRestante;
-                        dataGridItemLance.Rows[listIndex].Cells[5].Value = itemLance.TempoRestante;
+                        ListaLances[listIndex].RemainingTime = itemLance.RemainingTime;
+                        dataGridItemLance.Rows[listIndex].Cells[5].Value = itemLance.RemainingTime;
                     }
                 }
             }

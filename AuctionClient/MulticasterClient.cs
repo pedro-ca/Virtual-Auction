@@ -28,7 +28,7 @@ namespace AuctionClient
         public string privateSessionKey;          //yes, i know Ive declared a private key as public. not secure at all, but it just works
         RijndaelManaged rijndaelEncryption = new RijndaelManaged();
 
-        public Participante participanteAtual;
+        public AuctionParticipant participanteAtual;
 
         public readonly string comandoClear = "#clear=";
         public readonly string comandoUpdate = "#update=";
@@ -38,13 +38,13 @@ namespace AuctionClient
         public readonly string comandoDeny = "!deny=";
         //talvez adicionar um comando chamado comandoMessage, onde client e servidores adicionam messagens em um datagridview que faz log de transações.
 
-        public void SendJoinMessage(Participante participante)      
+        public void SendJoinMessage(AuctionParticipant participante)      
         {
             string message = comandoJoin + JsonSerializer.Serialize(participante);
             SendMessage(message);
         }
 
-        public void SendBuyMessage(int rowIndex, float valorLance, Participante participante)
+        public void SendBuyMessage(int rowIndex, float valorLance, AuctionParticipant participante)
         {
             string message = comandoBuy + rowIndex +","+ valorLance +","+ JsonSerializer.Serialize(participante);
             SendMessage(message);

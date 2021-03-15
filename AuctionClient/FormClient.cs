@@ -16,7 +16,7 @@ namespace AuctionClient
         public const int serverPort = 10002;
         X509Certificate2 userCertificate;
 
-        public List<ItemLance> ListaLances = new List<ItemLance>();
+        public List<AuctionItem> ListaLances = new List<AuctionItem>();
         MulticasterClient multicast = new MulticasterClient();
 
         private string privateClientKey; 
@@ -64,7 +64,6 @@ namespace AuctionClient
                 rijndaelEncryption.IV = Encoding.UTF8.GetBytes(privateClientKey);        //seria melhor se o iv fosse aleatorio...
 
                 string answer = multicast.DecryptStringFromBytes(Encoding.Unicode.GetBytes(answerTemp), rijndaelEncryption.Key, rijndaelEncryption.IV);;  //Encoding.UTF8.GetString(bytesToRead, 0, bytesRead);
-                rijndaelEncryption.Dispose();
 
                 if (answer.StartsWith(multicast.comandoDeny))
                 {
@@ -74,9 +73,10 @@ namespace AuctionClient
                 {
                     answer = answer.Substring(multicast.comandoKey.Length);
                     multicast.privateSessionKey = answer;
-                    multicast.participanteAtual = new Participante(txtBoxUsername.Text, "exampleip") ;
+                    multicast.participanteAtual = new AuctionParticipant(txtBoxUsername.Text, "exampleip") ;
                     multicast.JoinGroup();
                     groupBoxItens.Enabled = true;
+                    groupBoxConnect.Enabled = false;
                     MessageBox.Show("Sucessfully logged in. Current Session's Private Key:\n"+ multicast.privateSessionKey, "Auth Completed", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
@@ -101,14 +101,14 @@ namespace AuctionClient
         public void UpdateDataGridItemLance()
         {
             dataGridItemLance.Invoke(new MethodInvoker(() => { dataGridItemLance.Rows.Clear(); }));
-            foreach (ItemLance item in ListaLances){
+            foreach (AuctionItem item in ListaLances){
                 if (dataGridItemLance.InvokeRequired)
                 {
-                    dataGridItemLance.Invoke(new MethodInvoker(() => { dataGridItemLance.Rows.Add(item.NomeItem, item.EstaDisponivel, item.DonoAtual, "$ " + item.ValorAtual, "$ " + item.ValorAdicionalMinimo, item.TempoRestante); }));
+                    dataGridItemLance.Invoke(new MethodInvoker(() => { dataGridItemLance.Rows.Add(item.ItemName, item.IsAvailable, item.CurrentOwner, "$ " + item.CurrentValue, "$ " + item.MinAditionalValue, item.RemainingTime); }));
                 }
                 else
                 {
-                    dataGridItemLance.Rows.Add(item.NomeItem, item.EstaDisponivel, item.DonoAtual, "$ " + item.ValorAtual, "$ " + item.ValorAdicionalMinimo, item.TempoRestante);
+                    dataGridItemLance.Rows.Add(item.ItemName, item.IsAvailable, item.CurrentOwner, "$ " + item.CurrentValue, "$ " + item.MinAditionalValue, item.RemainingTime);
                 }
             }
         }
@@ -119,25 +119,25 @@ namespace AuctionClient
             {
                 if (ListaLances.Count > 0 && dataGridItemLance != null)
                 {
-                    foreach (ItemLance itemLance in ListaLances)
+                    foreach (AuctionItem itemLance in ListaLances)
                     {
                         try
                         {
-                            if (itemLance.EstaDisponivel)
+                            if (itemLance.IsAvailable)
                             {
                                 int listIndex = ListaLances.IndexOf(itemLance);
 
-                                if (itemLance.TempoRestante > 0)
+                                if (itemLance.RemainingTime > 0)
                                 {
-                                    itemLance.TempoRestante--;
-                                    ListaLances[listIndex].TempoRestante = itemLance.TempoRestante;
-                                    dataGridItemLance.Rows[listIndex].Cells[5].Value = itemLance.TempoRestante;
+                                    itemLance.RemainingTime--;
+                                    ListaLances[listIndex].RemainingTime = itemLance.RemainingTime;
+                                    dataGridItemLance.Rows[listIndex].Cells[5].Value = itemLance.RemainingTime;
                                 }
                                 else
                                 {
-                                    itemLance.EstaDisponivel = false;
-                                    ListaLances[listIndex].EstaDisponivel = itemLance.EstaDisponivel;
-                                    dataGridItemLance.Rows[listIndex].Cells[1].Value = itemLance.EstaDisponivel;
+                                    itemLance.IsAvailable = false;
+                                    ListaLances[listIndex].IsAvailable = itemLance.IsAvailable;
+                                    dataGridItemLance.Rows[listIndex].Cells[1].Value = itemLance.IsAvailable;
                                 }
                             }
                         }
@@ -170,7 +170,7 @@ namespace AuctionClient
                     {
                         message = message.Substring(multicast.comandoUpdate.Length);
 
-                        ListaLances = JsonSerializer.Deserialize<List<ItemLance>>(message);
+                        ListaLances = JsonSerializer.Deserialize<List<AuctionItem>>(message);
                         UpdateDataGridItemLance();
                     }
                 }
@@ -193,8 +193,8 @@ namespace AuctionClient
         {
             if (dataGridItemLance.CurrentCell != null)
             {
-                float valorAtual = ListaLances[dataGridItemLance.CurrentCell.RowIndex].ValorAtual;
-                float valorAdicionalMinimo = ListaLances[dataGridItemLance.CurrentCell.RowIndex].ValorAdicionalMinimo;
+                float valorAtual = ListaLances[dataGridItemLance.CurrentCell.RowIndex].CurrentValue;
+                float valorAdicionalMinimo = ListaLances[dataGridItemLance.CurrentCell.RowIndex].MinAditionalValue;
 
                 var telaAdicionarItem = new BuyItem(valorAtual, valorAdicionalMinimo)
                 {

@@ -56,11 +56,11 @@
             this.groupBoxItens.Controls.Add(this.button1);
             this.groupBoxItens.Controls.Add(this.dataGridItemLance);
             this.groupBoxItens.Enabled = false;
-            this.groupBoxItens.Location = new System.Drawing.Point(9, 10);
-            this.groupBoxItens.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBoxItens.Location = new System.Drawing.Point(12, 12);
+            this.groupBoxItens.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBoxItens.Name = "groupBoxItens";
-            this.groupBoxItens.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBoxItens.Size = new System.Drawing.Size(538, 357);
+            this.groupBoxItens.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBoxItens.Size = new System.Drawing.Size(717, 439);
             this.groupBoxItens.TabIndex = 0;
             this.groupBoxItens.TabStop = false;
             this.groupBoxItens.Text = "Items em Leilão";
@@ -68,10 +68,10 @@
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(188, 301);
-            this.button1.Margin = new System.Windows.Forms.Padding(2);
+            this.button1.Location = new System.Drawing.Point(251, 370);
+            this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(163, 41);
+            this.button1.Size = new System.Drawing.Size(217, 50);
             this.button1.TabIndex = 2;
             this.button1.Text = "Enviar novo Lance para o Item";
             this.button1.UseVisualStyleBackColor = true;
@@ -92,8 +92,8 @@
             this.ValAtual,
             this.ValPorLance,
             this.TempoRestante});
-            this.dataGridItemLance.Location = new System.Drawing.Point(12, 25);
-            this.dataGridItemLance.Margin = new System.Windows.Forms.Padding(2);
+            this.dataGridItemLance.Location = new System.Drawing.Point(16, 31);
+            this.dataGridItemLance.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dataGridItemLance.MultiSelect = false;
             this.dataGridItemLance.Name = "dataGridItemLance";
             this.dataGridItemLance.ReadOnly = true;
@@ -102,7 +102,7 @@
             this.dataGridItemLance.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dataGridItemLance.RowTemplate.Height = 24;
             this.dataGridItemLance.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridItemLance.Size = new System.Drawing.Size(515, 258);
+            this.dataGridItemLance.Size = new System.Drawing.Size(687, 318);
             this.dataGridItemLance.TabIndex = 0;
             // 
             // Nome
@@ -169,16 +169,16 @@
             // 
             this.groupBoxConnect.Controls.Add(this.button2);
             this.groupBoxConnect.Controls.Add(this.txtBoxServerIp);
-            this.groupBoxConnect.Controls.Add(this.label3);
             this.groupBoxConnect.Controls.Add(this.txtBoxCertificateKey);
-            this.groupBoxConnect.Controls.Add(this.label2);
             this.groupBoxConnect.Controls.Add(this.txtBoxUsername);
             this.groupBoxConnect.Controls.Add(this.label1);
-            this.groupBoxConnect.Location = new System.Drawing.Point(559, 11);
-            this.groupBoxConnect.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBoxConnect.Controls.Add(this.label2);
+            this.groupBoxConnect.Controls.Add(this.label3);
+            this.groupBoxConnect.Location = new System.Drawing.Point(745, 14);
+            this.groupBoxConnect.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBoxConnect.Name = "groupBoxConnect";
-            this.groupBoxConnect.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBoxConnect.Size = new System.Drawing.Size(239, 188);
+            this.groupBoxConnect.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBoxConnect.Size = new System.Drawing.Size(319, 231);
             this.groupBoxConnect.TabIndex = 1;
             this.groupBoxConnect.TabStop = false;
             this.groupBoxConnect.Text = "Conectar ao Leilão";
@@ -186,10 +186,10 @@
             // button2
             // 
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(77, 147);
-            this.button2.Margin = new System.Windows.Forms.Padding(2);
+            this.button2.Location = new System.Drawing.Point(103, 181);
+            this.button2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(80, 27);
+            this.button2.Size = new System.Drawing.Size(107, 37);
             this.button2.TabIndex = 3;
             this.button2.Text = "Conectar";
             this.button2.UseVisualStyleBackColor = true;
@@ -197,11 +197,11 @@
             // 
             // txtBoxServerIp
             // 
-            this.txtBoxServerIp.Location = new System.Drawing.Point(18, 115);
-            this.txtBoxServerIp.Margin = new System.Windows.Forms.Padding(2);
+            this.txtBoxServerIp.Location = new System.Drawing.Point(24, 148);
+            this.txtBoxServerIp.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtBoxServerIp.MaxLength = 15;
             this.txtBoxServerIp.Name = "txtBoxServerIp";
-            this.txtBoxServerIp.Size = new System.Drawing.Size(205, 20);
+            this.txtBoxServerIp.Size = new System.Drawing.Size(272, 22);
             this.txtBoxServerIp.TabIndex = 8;
             this.txtBoxServerIp.Text = "127.0.0.1";
             this.txtBoxServerIp.TextChanged += new System.EventHandler(this.txtBoxServerIp_TextChanged);
@@ -209,72 +209,70 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(16, 98);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label3.Location = new System.Drawing.Point(21, 129);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(54, 13);
+            this.label3.Size = new System.Drawing.Size(70, 17);
             this.label3.TabIndex = 7;
             this.label3.Text = "Server IP:";
             // 
             // txtBoxCertificateKey
             // 
-            this.txtBoxCertificateKey.Location = new System.Drawing.Point(18, 78);
-            this.txtBoxCertificateKey.Margin = new System.Windows.Forms.Padding(2);
+            this.txtBoxCertificateKey.Location = new System.Drawing.Point(24, 99);
+            this.txtBoxCertificateKey.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtBoxCertificateKey.MaxLength = 10;
             this.txtBoxCertificateKey.Name = "txtBoxCertificateKey";
-            this.txtBoxCertificateKey.Size = new System.Drawing.Size(205, 20);
+            this.txtBoxCertificateKey.Size = new System.Drawing.Size(272, 22);
             this.txtBoxCertificateKey.TabIndex = 6;
+            this.txtBoxCertificateKey.UseSystemPasswordChar = true;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(16, 61);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Location = new System.Drawing.Point(21, 80);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(56, 13);
+            this.label2.Size = new System.Drawing.Size(75, 17);
             this.label2.TabIndex = 5;
-            this.label2.Text = "Password:";
+            this.label2.Text = "Client Key:";
             // 
             // txtBoxUsername
             // 
-            this.txtBoxUsername.Location = new System.Drawing.Point(18, 41);
-            this.txtBoxUsername.Margin = new System.Windows.Forms.Padding(2);
+            this.txtBoxUsername.Location = new System.Drawing.Point(24, 50);
+            this.txtBoxUsername.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtBoxUsername.MaxLength = 15;
             this.txtBoxUsername.Name = "txtBoxUsername";
-            this.txtBoxUsername.Size = new System.Drawing.Size(205, 20);
+            this.txtBoxUsername.Size = new System.Drawing.Size(272, 22);
             this.txtBoxUsername.TabIndex = 4;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(16, 24);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Location = new System.Drawing.Point(21, 31);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(58, 13);
+            this.label1.Size = new System.Drawing.Size(77, 17);
             this.label1.TabIndex = 3;
             this.label1.Text = "Username:";
             // 
             // groupBoxMessages
             // 
-            this.groupBoxMessages.Location = new System.Drawing.Point(559, 204);
-            this.groupBoxMessages.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBoxMessages.Location = new System.Drawing.Point(745, 251);
+            this.groupBoxMessages.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBoxMessages.Name = "groupBoxMessages";
-            this.groupBoxMessages.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBoxMessages.Size = new System.Drawing.Size(239, 162);
+            this.groupBoxMessages.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBoxMessages.Size = new System.Drawing.Size(319, 199);
             this.groupBoxMessages.TabIndex = 3;
             this.groupBoxMessages.TabStop = false;
             this.groupBoxMessages.Text = "Mensagens do Leilão";
             // 
             // FormClient
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(809, 377);
+            this.ClientSize = new System.Drawing.Size(1079, 464);
             this.Controls.Add(this.groupBoxMessages);
             this.Controls.Add(this.groupBoxConnect);
             this.Controls.Add(this.groupBoxItens);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.MaximizeBox = false;
             this.Name = "FormClient";
             this.Text = "Leilão Client";

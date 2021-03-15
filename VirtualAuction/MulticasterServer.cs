@@ -42,7 +42,7 @@ namespace AuctionServer
             SendMessage(message);
         }
 
-        public void SendUpdateMessage(List<ItemLance> ListaLances)
+        public void SendUpdateMessage(List<AuctionItem> ListaLances)
         {
             string message = comandoUpdate + JsonSerializer.Serialize(ListaLances);
             SendMessage(message);
