@@ -25,7 +25,7 @@ namespace AuctionClient
         private bool stayAlive = true;
         private Thread t2 = null;
 
-        public string privateKey;          //yes, i know Ive declared a private key as public. not secure at all, but it just works
+        public string privateSessionKey;          //yes, i know Ive declared a private key as public. not secure at all, but it just works
         RijndaelManaged rijndaelEncryption = new RijndaelManaged();
 
         public Participante participanteAtual;
@@ -70,8 +70,8 @@ namespace AuctionClient
                 if (!IPAddress.TryParse("224.0.0.251", out group))   //valor fixo
                     throw new ApplicationException("Invalid Multicast Group Address");
 
-                rijndaelEncryption.Key = Encoding.UTF8.GetBytes(privateKey);
-                rijndaelEncryption.IV = Encoding.UTF8.GetBytes(privateKey);        //seria melhor se o iv fosse aleatorio...
+                rijndaelEncryption.Key = Encoding.UTF8.GetBytes(privateSessionKey);
+                rijndaelEncryption.IV = Encoding.UTF8.GetBytes(privateSessionKey);        //seria melhor se o iv fosse aleatorio...
 
                 client = new UdpClient();
                 client.Client.ExclusiveAddressUse = false;
@@ -130,7 +130,7 @@ namespace AuctionClient
             }
         }
 
-        private byte[] EncryptStringToBytes(string plainText, byte[] Key, byte[] IV)
+        public byte[] EncryptStringToBytes(string plainText, byte[] Key, byte[] IV)
         {
             if (plainText == null || plainText.Length <= 0)
                 throw new ArgumentNullException("plainText");
@@ -162,7 +162,7 @@ namespace AuctionClient
             return encrypted;
         }
         
-        private string DecryptStringFromBytes(byte[] cipherText, byte[] Key, byte[] IV)
+        public string DecryptStringFromBytes(byte[] cipherText, byte[] Key, byte[] IV)
         {
             if (cipherText == null || cipherText.Length <= 0)
                 throw new ArgumentNullException("cipherText");

@@ -19,6 +19,8 @@ namespace AuctionClient
         public List<ItemLance> ListaLances = new List<ItemLance>();
         MulticasterClient multicast = new MulticasterClient();
 
+        private string privateClientKey; 
+
         public FormClient()
         {
             InitializeComponent();
@@ -48,21 +50,39 @@ namespace AuctionClient
 
                 byte[] bytesToRead = new byte[client.ReceiveBufferSize];
                 int bytesRead = nwStream.Read(bytesToRead, 0, client.ReceiveBufferSize);
-                string answer = Encoding.UTF8.GetString(bytesToRead, 0, bytesRead);
-                if (answer == multicast.comandoDeny)
+
+                string answerTemp = Encoding.Unicode.GetString(bytesToRead, 0, bytesRead);
+                answerTemp.TrimEnd('\0');
+
+                while (privateClientKey.Length < 16)  //cambiarra f*dida. 16 caraceres é string ideal pra ser usado como key e iv
+                {
+                    privateClientKey = privateClientKey + " ";
+                }
+
+                RijndaelManaged rijndaelEncryption = new RijndaelManaged();
+                rijndaelEncryption.Key = Encoding.UTF8.GetBytes(privateClientKey);
+                rijndaelEncryption.IV = Encoding.UTF8.GetBytes(privateClientKey);        //seria melhor se o iv fosse aleatorio...
+
+                string answer = multicast.DecryptStringFromBytes(Encoding.Unicode.GetBytes(answerTemp), rijndaelEncryption.Key, rijndaelEncryption.IV);;  //Encoding.UTF8.GetString(bytesToRead, 0, bytesRead);
+                rijndaelEncryption.Dispose();
+
+                if (answer.StartsWith(multicast.comandoDeny))
                 {
                     MessageBox.Show("Certificate does not exist or invalid format.", "Auth Error", MessageBoxButtons.OK,MessageBoxIcon.Warning);
                 }
                 else if (answer.StartsWith(multicast.comandoKey))
                 {
                     answer = answer.Substring(multicast.comandoKey.Length);
-                    multicast.privateKey = answer;
+                    multicast.privateSessionKey = answer;
                     multicast.participanteAtual = new Participante(txtBoxUsername.Text, "exampleip") ;
                     multicast.JoinGroup();
                     groupBoxItens.Enabled = true;
-                    MessageBox.Show("Sucessfully logged in. Current Session's Private Key:\n"+ multicast.privateKey, "Auth Completed", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Sucessfully logged in. Current Session's Private Key:\n"+ multicast.privateSessionKey, "Auth Completed", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-
+                else
+                {
+                    MessageBox.Show("Private Client Key does not exist or invalid format.", "Auth Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
                 client.Close();
             }
             catch (Exception e)
@@ -196,8 +216,8 @@ namespace AuctionClient
                 if (dialogResult == DialogResult.Yes)
                 {
                     string username = txtBoxUsername.Text;
-                    string certificateKey = txtBoxCertificateKey.Text;
                     string serverIp = txtBoxServerIp.Text;
+                    privateClientKey = txtBoxCertificateKey.Text;
 
                     userCertificate = CreateCert(username);
                     SendAuthRequest(userCertificate, serverIp);

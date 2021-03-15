@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices.ComTypes;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Json;
@@ -16,7 +17,6 @@ namespace AuctionServer
     {
         public const int serverPort = 10002;
         public const string serverAddress = "127.0.0.1";
-        //private string[] arrayPublicKeys = new string[5] { "senhaSecreta", "vacilo", "toExausto", "Beep", "olokobixo"};
         private Dictionary<string, string> dictClientKey = new Dictionary<string, string>();
 
 
@@ -75,12 +75,24 @@ namespace AuctionServer
                     {
                         X509Certificate2 userCert = new X509Certificate2();
                         userCert.Import(buffer);
-                        MessageBox.Show("Received = " + userCert.ToString());
+                        //MessageBox.Show("Received = " + userCert.ToString());
 
-
-                        if (VerifyCertificate(userCert))
+                        string privateClientKey;
+                        if(dictClientKey.TryGetValue(userCert.Subject, out privateClientKey)) //(dictClientKey.ContainsKey(userCert.Subject))
                         {
-                            bytesToSend = ASCIIEncoding.UTF8.GetBytes(multicast.comandoKey + multicast.privateSessionKey);
+                            while (privateClientKey.Length < 16)  //cambiarra f*dida. 16 caraceres é string ideal pra ser usado como key e iv
+                            {
+                                privateClientKey = privateClientKey + " ";
+                            }
+
+                            RijndaelManaged rijndaelEncryption = new RijndaelManaged();
+                            rijndaelEncryption.Key = Encoding.UTF8.GetBytes(privateClientKey);
+                            rijndaelEncryption.IV = Encoding.UTF8.GetBytes(privateClientKey);        //seria melhor se o iv fosse aleatorio...
+
+                            bytesToSend = multicast.EncryptStringToBytes(multicast.comandoKey + multicast.privateSessionKey, rijndaelEncryption.Key, rijndaelEncryption.IV);
+
+                            string debugString = multicast.DecryptStringFromBytes(bytesToSend, rijndaelEncryption.Key, rijndaelEncryption.IV);
+                            rijndaelEncryption.Dispose();
                         }
                         else
                         {
@@ -89,7 +101,7 @@ namespace AuctionServer
                     }
                     catch (FormatException)
                     {
-                        bytesToSend = ASCIIEncoding.UTF8.GetBytes(multicast.comandoDeny);
+                        bytesToSend = ASCIIEncoding.Unicode.GetBytes(multicast.comandoDeny);
                     }
 
                     nwStream.Write(bytesToSend, 0, bytesToSend.Length);
@@ -99,26 +111,6 @@ namespace AuctionServer
                     MessageBox.Show("ReceiveAuthRequest Error:\n " + e.Message, "Exception Caught", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-        }
-
-        public bool VerifyCertificate(X509Certificate2 cert)
-        {
-            if (dictClientKey.ContainsKey(cert.Subject))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-            /*foreach(string key in arrayPublicKeys)
-            {
-                if(cert.Subject == "CN="+key)
-                {
-                    return true;
-                }
-            }
-            return false;*/
         }
 
         public void AddParticipante(Participante novoParticipante)   //server side
