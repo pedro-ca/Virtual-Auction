@@ -16,7 +16,7 @@ namespace AuctionClient
         public const int serverPort = 10002;
         X509Certificate2 userCertificate;
 
-        public List<AuctionItem> ListaLances = new List<AuctionItem>();
+        public List<AuctionItem> ItemList = new List<AuctionItem>();
         MulticasterClient multicast = new MulticasterClient();
 
         private string privateClientKey; 
@@ -24,7 +24,7 @@ namespace AuctionClient
         public FormClient()
         {
             InitializeComponent();
-            multicast.CustomEvent += ReceiveMessage;
+            multicast.CustomEvent += ReceiveMulticastMessage;
             Thread t1 = new Thread(new ThreadStart(this.DoTimeTick));
             t1.Start();
         }
@@ -52,7 +52,6 @@ namespace AuctionClient
                 int bytesRead = nwStream.Read(bytesToRead, 0, client.ReceiveBufferSize);
 
                 string answerTemp = Encoding.Unicode.GetString(bytesToRead, 0, bytesRead);
-                answerTemp.TrimEnd('\0');
 
                 while (privateClientKey.Length < 16)  //cambiarra f*dida. 16 caraceres é string ideal pra ser usado como key e iv
                 {
@@ -91,17 +90,17 @@ namespace AuctionClient
             }
         }
 
-        public void SendLance(float novoValorLance)
+        public void SendBid(float novoValorLance)
         {
             if (dataGridItemLance.CurrentCell != null)
             {
                 multicast.SendBuyMessage(dataGridItemLance.CurrentCell.RowIndex, novoValorLance, multicast.participanteAtual);
             }
         }
-        public void UpdateDataGridItemLance()
+        public void UpdateDataGridAuctionItem()
         {
             dataGridItemLance.Invoke(new MethodInvoker(() => { dataGridItemLance.Rows.Clear(); }));
-            foreach (AuctionItem item in ListaLances){
+            foreach (AuctionItem item in ItemList){
                 if (dataGridItemLance.InvokeRequired)
                 {
                     dataGridItemLance.Invoke(new MethodInvoker(() => { dataGridItemLance.Rows.Add(item.ItemName, item.IsAvailable, item.CurrentOwner, "$ " + item.CurrentValue, "$ " + item.MinAditionalValue, item.RemainingTime); }));
@@ -117,26 +116,26 @@ namespace AuctionClient
         {
             while (!this.IsDisposed)
             {
-                if (ListaLances.Count > 0 && dataGridItemLance != null)
+                if (ItemList.Count > 0 && dataGridItemLance != null)
                 {
-                    foreach (AuctionItem itemLance in ListaLances)
+                    foreach (AuctionItem itemLance in ItemList)
                     {
                         try
                         {
                             if (itemLance.IsAvailable)
                             {
-                                int listIndex = ListaLances.IndexOf(itemLance);
+                                int listIndex = ItemList.IndexOf(itemLance);
 
                                 if (itemLance.RemainingTime > 0)
                                 {
                                     itemLance.RemainingTime--;
-                                    ListaLances[listIndex].RemainingTime = itemLance.RemainingTime;
+                                    ItemList[listIndex].RemainingTime = itemLance.RemainingTime;
                                     dataGridItemLance.Rows[listIndex].Cells[5].Value = itemLance.RemainingTime;
                                 }
                                 else
                                 {
                                     itemLance.IsAvailable = false;
-                                    ListaLances[listIndex].IsAvailable = itemLance.IsAvailable;
+                                    ItemList[listIndex].IsAvailable = itemLance.IsAvailable;
                                     dataGridItemLance.Rows[listIndex].Cells[1].Value = itemLance.IsAvailable;
                                 }
                             }
@@ -151,7 +150,7 @@ namespace AuctionClient
             }
         }
 
-        private void ReceiveMessage(string message)
+        private void ReceiveMulticastMessage(string message)
         {
             try
             {
@@ -161,17 +160,17 @@ namespace AuctionClient
                     if (message.StartsWith(multicast.comandoClear))     //Clear operation. Format: #clear=
                     {
                         message = message.Substring(multicast.comandoClear.Length);
-                        ListaLances.Clear();
-                        UpdateDataGridItemLance();
+                        ItemList.Clear();
+                        UpdateDataGridAuctionItem();
                         multicast.SendJoinMessage(multicast.participanteAtual);
-                        MessageBox.Show("O Servidor de Lances reiniciou. Todos os lances foram limpos.");
+                        MessageBox.Show("The server restared. All bids have been reset.");
                     }
                     else if (message.StartsWith(multicast.comandoUpdate))   //Update operation. Format: #update=List<ItemLance>
                     {
                         message = message.Substring(multicast.comandoUpdate.Length);
 
-                        ListaLances = JsonSerializer.Deserialize<List<AuctionItem>>(message);
-                        UpdateDataGridItemLance();
+                        ItemList = JsonSerializer.Deserialize<List<AuctionItem>>(message);
+                        UpdateDataGridAuctionItem();
                     }
                 }
             }
@@ -193,8 +192,8 @@ namespace AuctionClient
         {
             if (dataGridItemLance.CurrentCell != null)
             {
-                float valorAtual = ListaLances[dataGridItemLance.CurrentCell.RowIndex].CurrentValue;
-                float valorAdicionalMinimo = ListaLances[dataGridItemLance.CurrentCell.RowIndex].MinAditionalValue;
+                float valorAtual = ItemList[dataGridItemLance.CurrentCell.RowIndex].CurrentValue;
+                float valorAdicionalMinimo = ItemList[dataGridItemLance.CurrentCell.RowIndex].MinAditionalValue;
 
                 var telaAdicionarItem = new BuyItem(valorAtual, valorAdicionalMinimo)
                 {
@@ -225,7 +224,7 @@ namespace AuctionClient
             }
             else
             {
-                MessageBox.Show("Preencha todos os campos antes de tentar se conectar.", "Dados Inválidos");
+                MessageBox.Show("Fill all fields before trying to connect with the server.", "Invalid data.");
             }
         }
 

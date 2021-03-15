@@ -26,7 +26,7 @@ namespace AuctionClient
                     if (valorNovoLance >= LanceMinimo)
                     {
                         FormClient parentForm = (FormClient)this.Owner;
-                        parentForm.SendLance(valorNovoLance);
+                        parentForm.SendBid(valorNovoLance);
                         this.Dispose();
                     }
                     else
